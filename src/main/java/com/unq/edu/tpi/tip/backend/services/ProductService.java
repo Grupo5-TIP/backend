@@ -17,7 +17,7 @@ public class ProductService
 
 	public ProductService(ProductRepository productRepository){
 		this.productRepository = productRepository;
-		productMapper = new ProductMapper();
+		this.productMapper = new ProductMapper();
 	}
 
 	public List<ProductDTO> getAll()

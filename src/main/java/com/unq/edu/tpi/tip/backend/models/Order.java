@@ -1,23 +1,29 @@
 package com.unq.edu.tpi.tip.backend.models;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
-@Table(name = "order")
+@Table(name = "customer_order")
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class Order
-{
+public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
 	private Long tableId;
+
+	@OneToMany(mappedBy = "order")
+	private Set<OrderedItem> orderedItems;
+
+	public Order(Long tableId) {
+		this.tableId = tableId;
+		this.orderedItems = new HashSet<>();
+	}
 }

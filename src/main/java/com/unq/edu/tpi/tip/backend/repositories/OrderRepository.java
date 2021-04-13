@@ -8,7 +8,6 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface OrderRepository extends CrudRepository<Order, Long>
-{
-	Optional<OrderDTO> findByTableId(Long tableId);
+public interface OrderRepository extends CrudRepository<Order, Long> {
+	Optional<Order> findByTableId(Long tableId);
 }
