@@ -17,13 +17,18 @@ public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+
+	@ManyToOne
+	private OrderTable orderTable;
+
 	private Long tableId;
 
 	@OneToMany(mappedBy = "order")
-	private Set<OrderedItem> orderedItems;
+	private Set<OrderedItem> orderedItems = new HashSet<>();
 
 	public Order(Long tableId) {
 		this.tableId = tableId;
 		this.orderedItems = new HashSet<>();
 	}
+
 }

@@ -20,7 +20,7 @@ public class OrderMapper {
     {
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setId(order.getId());
-        orderDTO.setTableId(order.getTableId());
+        //orderDTO.setTableId(order.getTableId());
         orderDTO.setOrderedItems(order.getOrderedItems());
         return orderDTO;
     }
@@ -29,7 +29,7 @@ public class OrderMapper {
     {
         Order order = new Order();
         order.setId(orderDTO.getId());
-        order.setTableId(orderDTO.getTableId());
+        //order.setTableId(orderDTO.getTableId());
         order.setOrderedItems(orderDTO.getOrderedItems());
         return order;
     }
@@ -38,7 +38,7 @@ public class OrderMapper {
     {
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setId(order.getId());
-        orderDTO.setTableId(order.getTableId());
+        //orderDTO.setTableId(order.getTableId());
         orderDTO.setOrderedItems(order.getOrderedItems());
         return orderDTO;
     }
