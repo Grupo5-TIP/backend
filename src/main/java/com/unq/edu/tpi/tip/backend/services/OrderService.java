@@ -6,8 +6,12 @@ import com.unq.edu.tpi.tip.backend.models.Order;
 import com.unq.edu.tpi.tip.backend.models.dtos.OrderDTO;
 import com.unq.edu.tpi.tip.backend.repositories.OrderRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
 
 @Service
+@Transactional
 public class OrderService
 {
 	private final OrderRepository orderRepository;
@@ -18,9 +22,18 @@ public class OrderService
 		this.orderMapper = new OrderMapper();
 	}
 
-	public OrderDTO getOrderByTableID(Long tableId) throws TableNotFoundException {
-		Order order = this.orderRepository.findByTableId(tableId).orElseThrow(
+	public List<OrderDTO> getOrdersByTableID(Long tableId) throws TableNotFoundException {
+		List<Order> orders = this.orderRepository.findAllByTableId(tableId).orElseThrow(
 				() -> new TableNotFoundException(tableId));
-		return OrderMapper.mapEntityIntoDTO(order);
+
+		return orderMapper.mapEntitiesIntoDTOs(orders);
+	}
+
+	public OrderDTO createOrder(OrderDTO orderDTO)
+	{
+		Order order = orderMapper.mapToPojo(orderDTO);
+		this.orderRepository.save(order);
+
+		return orderMapper.mapToDTO(order);
 	}
 }
