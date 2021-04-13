@@ -1,6 +1,5 @@
 package com.unq.edu.tpi.tip.backend.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -35,4 +34,5 @@ public class Order {
 		this.items = new HashSet<>();
 		this.orderedItems = new HashSet<>();
 	}
+
 }
