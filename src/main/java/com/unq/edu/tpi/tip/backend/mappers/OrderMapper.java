@@ -2,6 +2,7 @@ package com.unq.edu.tpi.tip.backend.mappers;
 
 import com.unq.edu.tpi.tip.backend.models.Order;
 import com.unq.edu.tpi.tip.backend.models.dtos.OrderDTO;
+import org.aspectj.weaver.ast.Or;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,6 +17,24 @@ public class OrderMapper {
     }
 
     public static OrderDTO mapEntityIntoDTO(Order order)
+    {
+        OrderDTO orderDTO = new OrderDTO();
+        orderDTO.setId(order.getId());
+        orderDTO.setTableId(order.getTableId());
+        orderDTO.setOrderedItems(order.getOrderedItems());
+        return orderDTO;
+    }
+
+    public Order mapToPojo(OrderDTO orderDTO)
+    {
+        Order order = new Order();
+        order.setId(orderDTO.getId());
+        order.setTableId(orderDTO.getTableId());
+        order.setOrderedItems(orderDTO.getOrderedItems());
+        return order;
+    }
+
+    public OrderDTO mapToDTO(Order order)
     {
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setId(order.getId());
