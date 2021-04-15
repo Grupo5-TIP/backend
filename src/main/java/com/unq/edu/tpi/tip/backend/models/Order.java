@@ -35,4 +35,8 @@ public class Order {
 		this.orderedItems = new HashSet<>();
 	}
 
+	public boolean hasOrderedItems()
+	{
+		return ! this.orderedItems.isEmpty();
+	}
 }
