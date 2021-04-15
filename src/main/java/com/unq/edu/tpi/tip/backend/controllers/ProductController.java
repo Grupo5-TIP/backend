@@ -1,8 +1,5 @@
 package com.unq.edu.tpi.tip.backend.controllers;
 
-import com.unq.edu.tpi.tip.backend.exceptions.TableNotFoundException;
-import com.unq.edu.tpi.tip.backend.models.Product;
-import com.unq.edu.tpi.tip.backend.models.dtos.OrderDTO;
 import com.unq.edu.tpi.tip.backend.models.dtos.ProductDTO;
 import com.unq.edu.tpi.tip.backend.services.ProductService;
 import org.springframework.http.MediaType;
