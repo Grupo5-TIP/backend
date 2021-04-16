@@ -17,7 +17,12 @@ public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+
+	@ManyToOne
+	private OrderTable orderTable;
+
 	private Long tableId;
+
 
 	/*@ManyToMany
 	Set<Item> items;*/

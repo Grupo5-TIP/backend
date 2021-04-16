@@ -14,15 +14,23 @@ import org.springframework.web.server.ResponseStatusException;
 public class ExceptionHandlerAspect{
 
 	@Around("@annotation(ExceptionAspect)")
-	private Object aroundHandlerError(ProceedingJoinPoint joinPoint) throws Throwable {
-		try {
+	private Object aroundHandlerError(ProceedingJoinPoint joinPoint) throws Throwable
+	{
+		try
+		{
 			return joinPoint.proceed();
-		}catch (TableDoesNotHaveOrdersException ex){
+		}
+		catch (TableDoesNotHaveOrdersException ex)
+		{
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage(), ex);
-		}catch (OrderEmptyException ex){
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage() , ex);
-		}catch (Exception ex){
-			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage() , ex);
+		}
+		catch (OrderEmptyException ex)
+		{
+			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage(), ex);
+		}
+		catch (Exception ex)
+		{
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, ex.getMessage(), ex);
 		}
 	}
 }
