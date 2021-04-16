@@ -1,10 +1,10 @@
 package com.unq.edu.tpi.tip.backend.exceptions;
 
-public class TableDoesNotHaveOrders extends Exception
+public class TableDoesNotHaveOrdersException extends Exception
 {
 	private String err;
 
-	public TableDoesNotHaveOrders(Long tableId)
+	public TableDoesNotHaveOrdersException(Long tableId)
 	{
 		this.err = "Table with id " + tableId.toString() + " does not have orders.";
 	}

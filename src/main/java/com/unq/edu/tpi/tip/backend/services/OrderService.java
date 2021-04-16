@@ -1,10 +1,11 @@
 package com.unq.edu.tpi.tip.backend.services;
 
 import com.unq.edu.tpi.tip.backend.exceptions.OrderEmptyException;
-import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotHaveOrders;
+import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotHaveOrdersException;
 import com.unq.edu.tpi.tip.backend.mappers.OrderMapper;
 import com.unq.edu.tpi.tip.backend.models.Order;
 import com.unq.edu.tpi.tip.backend.models.dtos.OrderDTO;
+import com.unq.edu.tpi.tip.backend.repositories.ItemRepository;
 import com.unq.edu.tpi.tip.backend.repositories.OrderRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,17 +17,19 @@ import java.util.List;
 public class OrderService
 {
 	private final OrderRepository orderRepository;
+	private final ItemRepository itemRepository;
 	private final OrderMapper orderMapper;
 
-	public OrderService(OrderRepository orderRepository) {
+	public OrderService(OrderRepository orderRepository, ItemRepository itemRepository) {
 		this.orderRepository = orderRepository;
 		this.orderMapper = new OrderMapper();
+		this.itemRepository = itemRepository;
 	}
 
-	public List<OrderDTO> getOrdersByTableID(Long tableId) throws TableDoesNotHaveOrders
+	public List<OrderDTO> getOrdersByTableID(Long tableId) throws TableDoesNotHaveOrdersException
 	{
 		List<Order> orders = this.orderRepository.findAllByTableId(tableId).orElseThrow(
-				() -> new TableDoesNotHaveOrders(tableId));
+				() -> new TableDoesNotHaveOrdersException(tableId));
 
 		return orderMapper.mapEntitiesIntoDTOs(orders);
 	}
@@ -39,7 +42,7 @@ public class OrderService
 		}
 		//TODO validar si la mesa existe o no
 
-		order = this.orderRepository.save(order);
+		order = this.orderRepository.saveAndFlush(order);
 
 		return orderMapper.mapToDTO(order);
 	}

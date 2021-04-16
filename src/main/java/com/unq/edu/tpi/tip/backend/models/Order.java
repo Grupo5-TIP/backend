@@ -19,10 +19,10 @@ public class Order {
 	private Long id;
 	private Long tableId;
 
-	@ManyToMany
-	Set<Item> items;
+	/*@ManyToMany
+	Set<Item> items;*/
 
-	@ManyToMany
+	@ManyToMany(cascade = {CascadeType.ALL})
 	@JoinTable(
 			name = "ordered_item",
 			joinColumns = @JoinColumn(name = "order_id"),
@@ -31,7 +31,7 @@ public class Order {
 
 	public Order(Long tableId) {
 		this.tableId = tableId;
-		this.items = new HashSet<>();
+		//this.items = new HashSet<>();
 		this.orderedItems = new HashSet<>();
 	}
 

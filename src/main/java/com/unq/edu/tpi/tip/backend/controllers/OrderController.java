@@ -2,7 +2,7 @@ package com.unq.edu.tpi.tip.backend.controllers;
 
 import com.unq.edu.tpi.tip.backend.aspects.ExceptionAspect;
 import com.unq.edu.tpi.tip.backend.exceptions.OrderEmptyException;
-import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotHaveOrders;
+import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotHaveOrdersException;
 import com.unq.edu.tpi.tip.backend.models.dtos.OrderDTO;
 import com.unq.edu.tpi.tip.backend.services.OrderService;
 import org.springframework.http.HttpStatus;
@@ -25,7 +25,7 @@ public class OrderController
 
 	@ExceptionAspect
 	@GetMapping(path = "/{tableId}", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<?> get(@PathVariable("tableId") Long tableId) throws TableDoesNotHaveOrders
+	public ResponseEntity<?> get(@PathVariable("tableId") Long tableId) throws TableDoesNotHaveOrdersException
 	{
 		List<OrderDTO> ordersDTO = orderService.getOrdersByTableID(tableId);
 
@@ -34,7 +34,7 @@ public class OrderController
 
 	@ExceptionAspect
 	@GetMapping(path = "", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<?> getAll() throws TableDoesNotHaveOrders
+	public ResponseEntity<?> getAll() throws TableDoesNotHaveOrdersException
 	{
 		List<OrderDTO> ordersDTO = orderService.getAll();
 
