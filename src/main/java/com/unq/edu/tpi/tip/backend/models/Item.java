@@ -1,5 +1,6 @@
 package com.unq.edu.tpi.tip.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -17,18 +18,19 @@ public class Item {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
     private Integer amount;
+
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @OneToMany(mappedBy = "item")
-    private Set<OrderedItem> orderedItems;
+    @JsonIgnore
+    @ManyToMany
+    Set<Order> orders;
 
     public Item(Integer amount, Product product) {
         this.amount = amount;
         this.product = product;
-        this.orderedItems = new HashSet<>();
+        this.orders = new HashSet<>();
     }
 }

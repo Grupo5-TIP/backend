@@ -1,5 +1,6 @@
 package com.unq.edu.tpi.tip.backend.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -19,11 +20,19 @@ public class Order {
 	private Long id;
 	private Long tableId;
 
-	@OneToMany(mappedBy = "order")
-	private Set<OrderedItem> orderedItems;
+	@ManyToMany
+	Set<Item> items;
+
+	@ManyToMany
+	@JoinTable(
+			name = "ordered_item",
+			joinColumns = @JoinColumn(name = "order_id"),
+			inverseJoinColumns = @JoinColumn(name = "item_id"))
+	Set<Item> orderedItems;
 
 	public Order(Long tableId) {
 		this.tableId = tableId;
+		this.items = new HashSet<>();
 		this.orderedItems = new HashSet<>();
 	}
 }
