@@ -19,5 +19,5 @@ public class OrderTable
 	private Long id;
 
 	@OneToMany
-	private List<Order> order;
+	private List<CustomerOrder> customerOrder;
 }

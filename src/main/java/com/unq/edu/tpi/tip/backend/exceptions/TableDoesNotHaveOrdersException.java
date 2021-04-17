@@ -6,7 +6,7 @@ public class TableDoesNotHaveOrdersException extends Exception
 
 	public TableDoesNotHaveOrdersException(Long tableId)
 	{
-		this.err = "Table with id " + tableId.toString() + " does not have orders.";
+		this.err = "Table with id " + tableId.toString() + " does not have customerOrders.";
 	}
 
 	@Override

@@ -3,8 +3,8 @@ package com.unq.edu.tpi.tip.backend.services;
 import com.unq.edu.tpi.tip.backend.exceptions.OrderEmptyException;
 import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotHaveOrdersException;
 import com.unq.edu.tpi.tip.backend.mappers.OrderMapper;
+import com.unq.edu.tpi.tip.backend.models.CustomerOrder;
 import com.unq.edu.tpi.tip.backend.models.Item;
-import com.unq.edu.tpi.tip.backend.models.Order;
 import com.unq.edu.tpi.tip.backend.models.dtos.OrderDTO;
 import com.unq.edu.tpi.tip.backend.repositories.ItemRepository;
 import com.unq.edu.tpi.tip.backend.repositories.OrderRepository;
@@ -30,33 +30,32 @@ public class OrderService
 
 	public List<OrderDTO> getOrdersByTableID(Long tableId) throws TableDoesNotHaveOrdersException
 	{
-		List<Order> orders = this.orderRepository.findAllByTableId(tableId).orElseThrow(
+		List<CustomerOrder> customerOrders = this.orderRepository.findAllByTableId(tableId).orElseThrow(
 				() -> new TableDoesNotHaveOrdersException(tableId));
 
-		return orderMapper.mapEntitiesIntoDTOs(orders);
+		return orderMapper.mapEntitiesIntoDTOs(customerOrders);
 	}
 
 	public OrderDTO createOrder(OrderDTO orderDTO) throws OrderEmptyException
 	{
-		Order order = orderMapper.mapToPojo(orderDTO);
-		if (!order.hasOrderedItems()){
+		CustomerOrder customerOrder = orderMapper.mapToPojo(orderDTO);
+		if (!customerOrder.hasOrderedItems()){
 			throw new OrderEmptyException();
 		}
 		//TODO validar si la mesa existe o no
 
-		order = this.orderRepository.save(order);
-		for(Item items : order.getOrderedItems()){
-			items.setOrder(order);
+		customerOrder = this.orderRepository.save(customerOrder);
+		for(Item items : customerOrder.getOrderedItems()){
+			items.setOrder(customerOrder);
 		}
 
-		order = this.orderRepository.save(order);
-
-		return orderMapper.mapToDTO(order);
+		customerOrder = this.orderRepository.save(customerOrder);
+		return orderMapper.mapToDTO(customerOrder);
 	}
 
 	public List<OrderDTO> getAll()
 	{
-		Iterable<Order> orders = this.orderRepository.findAll();
-		return orderMapper.mapEntitiesIntoDTOs(orders);
+		Iterable<CustomerOrder> customerOrders = this.orderRepository.findAll();
+		return orderMapper.mapEntitiesIntoDTOs(customerOrders);
 	}
 }

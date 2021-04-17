@@ -1,13 +1,13 @@
 package com.unq.edu.tpi.tip.backend.mappers;
 
-import com.unq.edu.tpi.tip.backend.models.Order;
+import com.unq.edu.tpi.tip.backend.models.CustomerOrder;
 import com.unq.edu.tpi.tip.backend.models.dtos.OrderDTO;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class OrderMapper {
-    public List<OrderDTO> mapEntitiesIntoDTOs(Iterable<Order> entities) {
+    public List<OrderDTO> mapEntitiesIntoDTOs(Iterable<CustomerOrder> entities) {
         List<OrderDTO> dtos = new ArrayList<>();
 
         entities.forEach(e -> dtos.add(mapEntityIntoDTO(e)));
@@ -15,30 +15,30 @@ public class OrderMapper {
         return dtos;
     }
 
-    public static OrderDTO mapEntityIntoDTO(Order order)
+    public static OrderDTO mapEntityIntoDTO(CustomerOrder customerOrder)
     {
         OrderDTO orderDTO = new OrderDTO();
-        orderDTO.setId(order.getId());
-        orderDTO.setTableId(order.getTableId());
-        orderDTO.setOrderedItems(order.getOrderedItems());
+        orderDTO.setId(customerOrder.getId());
+        orderDTO.setTableId(customerOrder.getTableId());
+        orderDTO.setOrderedItems(customerOrder.getOrderedItems());
         return orderDTO;
     }
 
-    public Order mapToPojo(OrderDTO orderDTO)
+    public CustomerOrder mapToPojo(OrderDTO orderDTO)
     {
-        Order order = new Order();
-        order.setId(orderDTO.getId());
-        order.setTableId(orderDTO.getTableId());
-        order.setOrderedItems(orderDTO.getOrderedItems());
-        return order;
+        CustomerOrder customerOrder = new CustomerOrder();
+        customerOrder.setId(orderDTO.getId());
+        customerOrder.setTableId(orderDTO.getTableId());
+        customerOrder.setOrderedItems(orderDTO.getOrderedItems());
+        return customerOrder;
     }
 
-    public OrderDTO mapToDTO(Order order)
+    public OrderDTO mapToDTO(CustomerOrder customerOrder)
     {
         OrderDTO orderDTO = new OrderDTO();
-        orderDTO.setId(order.getId());
-        orderDTO.setTableId(order.getTableId());
-        orderDTO.setOrderedItems(order.getOrderedItems());
+        orderDTO.setId(customerOrder.getId());
+        orderDTO.setTableId(customerOrder.getTableId());
+        orderDTO.setOrderedItems(customerOrder.getOrderedItems());
         return orderDTO;
     }
 }

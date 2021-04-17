@@ -6,20 +6,20 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @NamedEntityGraph(
-		name = "Order.orderedItems",
+		name = "CustomerOrder.orderedItems",
 		attributeNodes = @NamedAttributeNode("orderedItems")
 )
 
 @Entity
-@Table(name = "customer_order")
+@Table(name = "customerorder")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Order implements Serializable
+public class CustomerOrder implements Serializable
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -29,12 +29,12 @@ public class Order implements Serializable
 	private OrderTable orderTable;
 	private Long tableId;
 
-	@OneToMany(cascade = {CascadeType.ALL}, mappedBy = "order")
-	Set<Item> orderedItems;
+	@OneToMany(cascade = {CascadeType.ALL}, mappedBy = "customerOrder")
+	List<Item> orderedItems;
 
-	public Order(Long tableId) {
+	public CustomerOrder(Long tableId) {
 		this.tableId = tableId;
-		this.orderedItems = new HashSet<>();
+		this.orderedItems = new ArrayList<>();
 	}
 
 	public boolean hasOrderedItems()

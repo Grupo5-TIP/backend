@@ -7,9 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
-
 
 @Entity
 @Table(name = "item")
@@ -30,8 +27,12 @@ public class Item implements Serializable
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "order_id")
-    Order order;
-
+    private CustomerOrder  order;
+    /*
+    //@JsonIgnore
+    @ManyToOne(cascade = {CascadeType.ALL})
+    @JoinColumn(name = "customerOrder_id")
+    private CustomerOrder customerOrder;*/
 
     public Item(Integer amount, Product product) {
         this.amount = amount;

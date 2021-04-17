@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
 import java.util.Set;
 
 @Getter
@@ -13,5 +14,5 @@ import java.util.Set;
 public class OrderDTO {
     private Long id;
     private Long tableId;
-    private Set<Item> orderedItems;
+    private List<Item> orderedItems;
 }
