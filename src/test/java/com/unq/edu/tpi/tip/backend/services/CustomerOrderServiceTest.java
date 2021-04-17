@@ -46,13 +46,10 @@ public class CustomerOrderServiceTest
 		List<OrderDTO> ordersDTO = new ArrayList<>();
 
 		when(orderRepository.findAllByTableId(anyLong())).thenReturn(Optional.of(customerOrders));
-		when(orderMapper.mapEntitiesIntoDTOs(customerOrders)).thenReturn(ordersDTO);
 
 		List<OrderDTO> orderExpected = orderService.getOrdersByTableID(1l);
 
 		verify(orderRepository, times(1)).findAllByTableId(anyLong());
-		verify(orderMapper, times(1)).mapEntitiesIntoDTOs(customerOrders);
-
 		assertEquals(orderExpected, ordersDTO);
 	}
 
@@ -66,13 +63,10 @@ public class CustomerOrderServiceTest
 		List<OrderDTO> ordersDTO = Arrays.asList(orderDTOMock);
 
 		when(orderRepository.findAllByTableId(anyLong())).thenReturn(Optional.of(customerOrders));
-		when(orderMapper.mapEntitiesIntoDTOs(any())).thenReturn(ordersDTO);
 
 		List<OrderDTO> orderExpected = orderService.getOrdersByTableID(1l);
 
 		verify(orderRepository, times(1)).findAllByTableId(anyLong());
-		verify(orderMapper, times(1)).mapEntitiesIntoDTOs(anyList());
-
 		assertEquals(orderExpected.get(0).getOrderedItems(), customerOrders.get(0).getOrderedItems());
 		assertEquals(orderExpected.get(0).getTableId(), customerOrders.get(0).getTableId());
 	}
