@@ -1,23 +1,23 @@
 package com.unq.edu.tpi.tip.backend.models;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
-@Table(name = "order")
+@Table(name = "order_table")
 @Getter
 @Setter
 @NoArgsConstructor
-@AllArgsConstructor
-public class Order
+public class OrderTable
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
-	private Long tableId;
+
+	@OneToMany
+	private List<CustomerOrder> customerOrder;
 }
