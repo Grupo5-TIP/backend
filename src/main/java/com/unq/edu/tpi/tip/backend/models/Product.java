@@ -1,6 +1,7 @@
 package com.unq.edu.tpi.tip.backend.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -11,12 +12,17 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@NamedEntityGraph(
+		name = "Product.items",
+		attributeNodes = @NamedAttributeNode("items")
+)
+
 @Entity
 @Table(name = "product")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Product implements Serializable {
+public class Product implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
@@ -27,7 +33,8 @@ public class Product implements Serializable {
 
 	@Nullable
 	@JsonIgnore
-	@OneToMany(mappedBy = "product")
+	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+	@OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
 	private List<Item> items;
 
 	public Product(String name, String description, Double price) {

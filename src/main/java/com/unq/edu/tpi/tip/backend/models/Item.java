@@ -6,15 +6,18 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
+
 
 @Entity
 @Table(name = "item")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Item {
+public class Item implements Serializable
+{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
@@ -29,10 +32,10 @@ public class Item {
     @JoinColumn(name = "order_id")
     Order order;
 
+
     public Item(Integer amount, Product product) {
         this.amount = amount;
         this.product = product;
-        //this.orders = new HashSet<>();
     }
 
     @Override public boolean equals(Object o)
