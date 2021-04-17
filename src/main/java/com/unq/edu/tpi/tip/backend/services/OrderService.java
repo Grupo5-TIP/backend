@@ -45,8 +45,8 @@ public class OrderService
 		//TODO validar si la mesa existe o no
 
 		customerOrder = this.orderRepository.save(customerOrder);
-		for(Item items : customerOrder.getOrderedItems()){
-			items.setOrder(customerOrder);
+		for(Item item : customerOrder.getOrderedItems()){
+			item.setCustomerOrder(customerOrder);
 		}
 
 		customerOrder = this.orderRepository.save(customerOrder);

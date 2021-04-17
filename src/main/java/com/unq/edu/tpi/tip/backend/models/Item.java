@@ -24,15 +24,15 @@ public class Item implements Serializable
     @JoinColumn(name = "product_id")
     private Product product;
 
-    @JsonIgnore
+    /*@JsonIgnore
     @ManyToOne
     @JoinColumn(name = "order_id")
-    private CustomerOrder  order;
-    /*
-    //@JsonIgnore
+    private CustomerOrder  order;*/
+
+    @JsonIgnore
     @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "customerOrder_id")
-    private CustomerOrder customerOrder;*/
+    private CustomerOrder customerOrder;
 
     public Item(Integer amount, Product product) {
         this.amount = amount;
