@@ -1,6 +1,5 @@
 package com.unq.edu.tpi.tip.backend.models;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -18,12 +17,17 @@ public class Order {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+
+	@ManyToOne
+	private OrderTable orderTable;
+
 	private Long tableId;
 
-	@ManyToMany
-	Set<Item> items;
 
-	@ManyToMany
+	/*@ManyToMany
+	Set<Item> items;*/
+
+	@ManyToMany(cascade = {CascadeType.ALL})
 	@JoinTable(
 			name = "ordered_item",
 			joinColumns = @JoinColumn(name = "order_id"),
@@ -32,7 +36,12 @@ public class Order {
 
 	public Order(Long tableId) {
 		this.tableId = tableId;
-		this.items = new HashSet<>();
+		//this.items = new HashSet<>();
 		this.orderedItems = new HashSet<>();
+	}
+
+	public boolean hasOrderedItems()
+	{
+		return ! this.orderedItems.isEmpty();
 	}
 }

@@ -5,11 +5,12 @@ import com.unq.edu.tpi.tip.backend.models.Product;
 import com.unq.edu.tpi.tip.backend.models.dtos.ProductDTO;
 import com.unq.edu.tpi.tip.backend.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@Transactional
 public class ProductService
 {
 	private final ProductRepository productRepository;
