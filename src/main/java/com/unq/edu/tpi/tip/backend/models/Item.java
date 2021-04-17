@@ -23,10 +23,11 @@ public class Item {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
-    /*
+
     @JsonIgnore
-    @ManyToMany
-    Set<Order> orders;*/
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    Order order;
 
     public Item(Integer amount, Product product) {
         this.amount = amount;

@@ -3,6 +3,7 @@ package com.unq.edu.tpi.tip.backend.services;
 import com.unq.edu.tpi.tip.backend.exceptions.OrderEmptyException;
 import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotHaveOrdersException;
 import com.unq.edu.tpi.tip.backend.mappers.OrderMapper;
+import com.unq.edu.tpi.tip.backend.models.Item;
 import com.unq.edu.tpi.tip.backend.models.Order;
 import com.unq.edu.tpi.tip.backend.models.dtos.OrderDTO;
 import com.unq.edu.tpi.tip.backend.repositories.ItemRepository;
@@ -42,7 +43,12 @@ public class OrderService
 		}
 		//TODO validar si la mesa existe o no
 
-		order = this.orderRepository.saveAndFlush(order);
+		order = this.orderRepository.save(order);
+		for(Item items : order.getOrderedItems()){
+			items.setOrder(order);
+		}
+
+		order = this.orderRepository.save(order);
 
 		return orderMapper.mapToDTO(order);
 	}
