@@ -24,11 +24,6 @@ public class Item implements Serializable
     @JoinColumn(name = "product_id")
     private Product product;
 
-    /*@JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "order_id")
-    private CustomerOrder  order;*/
-
     @JsonIgnore
     @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "customerOrder_id")
