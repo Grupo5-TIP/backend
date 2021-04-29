@@ -6,7 +6,7 @@ INSERT INTO product (id, description, name, price, image) VALUES (3,'Fideos ital
 INSERT INTO product (id, description, name, price, image) VALUES (4,'Matambre de ternera con ensalada rusa','Matambre con rusa', 400, 'https://bit.ly/3dqddiw');
 INSERT INTO product (id, description, name, price, image) VALUES (5,'Autentico tiramisu italiano','Tiramisu', 350, 'https://bit.ly/3gfRICZ');
 
-
+INSERT INTO order_table(id, state) VALUES (1, '');
 
 -- INSERT INTO item (id, amount, product_id) VALUES (1,10,1),(2,2,2),(3,3,3),(4,4,4),(5,1,5);
 

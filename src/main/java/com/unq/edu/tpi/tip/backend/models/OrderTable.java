@@ -17,6 +17,8 @@ public class OrderTable
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
+	@ManyToOne
+	private State state;
 
 	@OneToMany
 	private List<CustomerOrder> customerOrder;

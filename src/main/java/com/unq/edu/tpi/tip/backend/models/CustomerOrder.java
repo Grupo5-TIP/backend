@@ -28,6 +28,7 @@ public class CustomerOrder implements Serializable
 	@ManyToOne
 	private OrderTable orderTable;
 	private Long tableId;
+	private Boolean isChecked;
 
 	@OneToMany(cascade = {CascadeType.ALL}, mappedBy = "customerOrder")
 	List<Item> orderedItems;
