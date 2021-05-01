@@ -10,4 +10,7 @@ import lombok.Setter;
 public class OrderTableDTO {
     private Long id;
     private String state;
+    private Integer x;
+    private Integer y;
+
 }

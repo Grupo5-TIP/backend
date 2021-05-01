@@ -19,6 +19,10 @@ public class OrderTableMapper {
     {
         OrderTableDTO orderTableDTO = new OrderTableDTO();
         orderTableDTO.setId(orderTable.getId());
+        orderTableDTO.setState(orderTable.getState().getState());
+        orderTableDTO.setX(orderTable.getX());
+        orderTableDTO.setY(orderTable.getY());
+
         return orderTableDTO;
     }
 

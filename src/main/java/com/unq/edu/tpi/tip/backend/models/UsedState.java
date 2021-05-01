@@ -1,5 +1,10 @@
 package com.unq.edu.tpi.tip.backend.models;
 
-public class UsedState extends State {
+import javax.persistence.Entity;
 
+@Entity
+public class UsedState extends State {
+    public UsedState(){
+        super("inUse");
+    }
 }

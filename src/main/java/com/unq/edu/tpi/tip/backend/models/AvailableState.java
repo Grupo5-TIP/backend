@@ -1,5 +1,10 @@
 package com.unq.edu.tpi.tip.backend.models;
 
-public class AvailableState {
+import javax.persistence.Entity;
 
+@Entity
+public class AvailableState extends State {
+    public AvailableState() {
+        super("empty");
+    }
 }

@@ -6,12 +6,11 @@ INSERT INTO product (id, description, name, price, image) VALUES (3,'Fideos ital
 INSERT INTO product (id, description, name, price, image) VALUES (4,'Matambre de ternera con ensalada rusa','Matambre con rusa', 400, 'https://bit.ly/3dqddiw');
 INSERT INTO product (id, description, name, price, image) VALUES (5,'Autentico tiramisu italiano','Tiramisu', 350, 'https://bit.ly/3gfRICZ');
 
-INSERT INTO order_table(id, state) VALUES (1, '');
+INSERT INTO order_table(id, state_id) VALUES (1, 1);
+INSERT INTO order_table(id, state_id) VALUES (2, 1);
 
--- INSERT INTO item (id, amount, product_id) VALUES (1,10,1),(2,2,2),(3,3,3),(4,4,4),(5,1,5);
+INSERT INTO state (id, state) VALUES (1, "availableState");
+INSERT INTO state (id, state) VALUES (2, "usedState");
 
--- INSERT INTO customer_order_items (order_id, items_id) VALUES (1,1),(2,2),(3,3),(4,4),(4,5);
-
--- INSERT INTO ordered_item (order_id, item_id) VALUES (1,1),(2,2),(3,3),(4,4),(4,5);
-
--- INSERT INTO item_orders (orders_id, item_id) VALUES (1,1),(2,2),(3,3),(4,4),(4,5);
+INSERT INTO state_order_table (state_id, order_table_id) VALUES (1, 1);
+INSERT INTO state_order_table (state_id, order_table_id) VALUES (2, 2);
