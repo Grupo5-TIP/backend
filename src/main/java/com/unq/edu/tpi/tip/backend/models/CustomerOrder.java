@@ -18,7 +18,6 @@ import java.util.List;
 @Table(name = "customerorder")
 @Getter
 @Setter
-@NoArgsConstructor
 public class CustomerOrder implements Serializable
 {
 	@Id
@@ -33,9 +32,14 @@ public class CustomerOrder implements Serializable
 	@OneToMany(cascade = {CascadeType.ALL}, mappedBy = "customerOrder")
 	List<Item> orderedItems;
 
+	public CustomerOrder() {
+		this.isChecked = false;
+	}
+
 	public CustomerOrder(Long tableId) {
 		this.tableId = tableId;
 		this.orderedItems = new ArrayList<>();
+		this.isChecked = false;
 	}
 
 	public boolean hasOrderedItems()

@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -32,6 +33,10 @@ public class OrderService
 	{
 		List<CustomerOrder> customerOrders = this.orderRepository.findAllByTableId(tableId).orElseThrow(
 				() -> new TableDoesNotHaveOrdersException(tableId));
+
+		customerOrders = customerOrders.stream()
+				.filter((order)-> !order.getIsChecked())
+				.collect(Collectors.toList());
 
 		return orderMapper.mapEntitiesIntoDTOs(customerOrders);
 	}
