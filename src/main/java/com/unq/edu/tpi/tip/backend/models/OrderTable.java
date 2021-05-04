@@ -21,13 +21,15 @@ public class OrderTable
 	private State state;
 	private Integer x;
 	private Integer y;
+	private Integer size;
 
 	@OneToMany
 	private List<CustomerOrder> customerOrder;
 
-	public OrderTable(State state, Integer x, Integer y) {
+	public OrderTable(State state, Integer x, Integer y, Integer size) {
 		this.state = state;
 		this.x = x;
 		this.y = y;
+		this.size = size;
 	}
 }

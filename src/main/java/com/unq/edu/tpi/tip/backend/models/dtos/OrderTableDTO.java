@@ -12,5 +12,6 @@ public class OrderTableDTO {
     private String state;
     private Integer x;
     private Integer y;
+    private Integer size;
 
 }

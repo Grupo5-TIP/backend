@@ -10,27 +10,21 @@ public class OrderTableMapper {
     public List<OrderTableDTO> mapEntitiesIntoDTOs(Iterable<OrderTable> entities) {
         List<OrderTableDTO> dtos = new ArrayList<>();
 
-        entities.forEach(e -> dtos.add(mapEntityIntoDTO(e)));
+        entities.forEach(e -> dtos.add(this.mapEntityIntoDTO(e)));
 
         return dtos;
     }
 
-    public static OrderTableDTO mapEntityIntoDTO(OrderTable orderTable)
+    public OrderTableDTO mapEntityIntoDTO(OrderTable orderTable)
     {
         OrderTableDTO orderTableDTO = new OrderTableDTO();
         orderTableDTO.setId(orderTable.getId());
         orderTableDTO.setState(orderTable.getState().getState());
         orderTableDTO.setX(orderTable.getX());
         orderTableDTO.setY(orderTable.getY());
+        orderTableDTO.setSize(orderTable.getSize());
 
         return orderTableDTO;
     }
 
-    public OrderTableDTO mapToDTO(OrderTable orderTable)
-    {
-        OrderTableDTO orderTableDTO = new OrderTableDTO();
-        orderTableDTO.setId(orderTable.getId());
-        orderTableDTO.setState(orderTable.getState().toString());
-        return orderTableDTO;
-    }
 }

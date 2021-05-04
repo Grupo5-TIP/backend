@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -55,7 +54,7 @@ public class OrderService
 		}
 
 		customerOrder = this.orderRepository.save(customerOrder);
-		return orderMapper.mapToDTO(customerOrder);
+		return orderMapper.mapEntityIntoDTO(customerOrder);
 	}
 
 	public List<OrderDTO> getAll()

@@ -35,7 +35,7 @@ public class InitInServiceDatabase {
     }
 
     private void fireInitialDataProducts() throws Exception {
-        productService.createProduct(new Product("Coca Cola2","Coca Cola", 200.0, "https://bit.ly/2Qx0RML"));
+        productService.createProduct(new Product("Coca Cola","Coca Cola 2 lts", 200.0, "https://bit.ly/2Qx0RML"));
         productService.createProduct(new Product("Milanesa con fritas","Milanesa de ternera con papas bastón", 650.0, "https://bit.ly/3v3IMov"));
         productService.createProduct(new Product("Fideos a la bolognesa","Coca Cola", 450.0, "https://bit.ly/2Q4pSz2"));
         productService.createProduct(new Product("Matambre con rusa","Matambre de ternera con ensalada rusa", 400.0, "https://bit.ly/3dqddiw"));
@@ -53,10 +53,14 @@ public class InitInServiceDatabase {
     }
 
     private void fireInitialDataOrderTable() throws StateNotFoundException {
-        OrderTable orderTable1 = new OrderTable(stateService.findById(1L), 1, 1);
+        OrderTable orderTable1 = new OrderTable(stateService.findById(1L), 1, 10, 4);
         orderTableService.save(orderTable1);
-        OrderTable orderTable2 = new OrderTable(stateService.findById(1L), 1, 1);
+        OrderTable orderTable2 = new OrderTable(stateService.findById(2L), 450, 10, 2);
         orderTableService.save(orderTable2);
+        OrderTable orderTable3 = new OrderTable(stateService.findById(2L), 900, 100, 2);
+        orderTableService.save(orderTable3);
+        OrderTable orderTable4 = new OrderTable(stateService.findById(1L), 0, 330, 6);
+        orderTableService.save(orderTable4);
 
     }
 }
