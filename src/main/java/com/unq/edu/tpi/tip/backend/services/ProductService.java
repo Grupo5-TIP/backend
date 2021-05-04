@@ -1,5 +1,6 @@
 package com.unq.edu.tpi.tip.backend.services;
 
+import com.unq.edu.tpi.tip.backend.aspects.ExceptionAspect;
 import com.unq.edu.tpi.tip.backend.mappers.ProductMapper;
 import com.unq.edu.tpi.tip.backend.models.Product;
 import com.unq.edu.tpi.tip.backend.models.dtos.ProductDTO;
@@ -27,5 +28,16 @@ public class ProductService
 		List<ProductDTO> productDTOS = this.productMapper.mapEntitiesIntoDTOs(products);
 
 		return productDTOS;
+	}
+
+	@ExceptionAspect
+	public Product createProduct(Product product) throws Exception {
+		Product newProduct = new Product(product.getName(),
+				product.getDescription(),
+				product.getPrice(),
+				product.getImage());
+
+		productRepository.save(newProduct);
+		return newProduct;
 	}
 }

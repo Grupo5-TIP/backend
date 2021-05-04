@@ -38,10 +38,11 @@ public class Product implements Serializable{
 	@OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
 	private List<Item> items;
 
-	public Product(String name, String description, Double price) {
+	public Product(String name, String description, Double price, String image) {
 		this.name = name;
 		this.description = description;
 		this.price = price;
+		this.image = image;
 		this.items = new ArrayList();
 	}
 
