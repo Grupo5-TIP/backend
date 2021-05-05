@@ -20,7 +20,9 @@ public class StateTest{
 	@Test
 	public void generateStateHaveNullsOrderTable(){
 		State aState = new UsedState();
+		aState.setId(1L);
 		assertEquals(aState.getOrderTable(), null);
+		assertEquals(aState.getId(), 1);
 	}
 
 }

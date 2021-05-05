@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
@@ -19,23 +18,27 @@ import java.util.List;
 
 @Entity
 @Table(name = "product")
-@Getter
-@Setter
 @NoArgsConstructor
 public class Product implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Getter
 	private Long id;
 
+	@Getter
 	private String name;
+	@Getter
 	private String description;
+	@Getter
 	private Double price;
+	@Getter
 	private String image;
 
 	@Nullable
 	@JsonIgnore
 	@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 	@OneToMany(mappedBy = "product", fetch = FetchType.EAGER)
+	@Getter
 	private List<Item> items;
 
 	public Product(String name, String description, Double price, String image) {

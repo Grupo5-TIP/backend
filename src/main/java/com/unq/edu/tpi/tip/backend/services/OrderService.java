@@ -22,9 +22,9 @@ public class OrderService
 	private final ItemRepository itemRepository;
 	private final OrderMapper orderMapper;
 
-	public OrderService(OrderRepository orderRepository, ItemRepository itemRepository) {
+	public OrderService(OrderRepository orderRepository, ItemRepository itemRepository, OrderMapper orderMapper) {
 		this.orderRepository = orderRepository;
-		this.orderMapper = new OrderMapper();
+		this.orderMapper = orderMapper;
 		this.itemRepository = itemRepository;
 	}
 

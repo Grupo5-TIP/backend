@@ -29,4 +29,16 @@ public class OrderTableTest {
         assertEquals(orderTable.getY(), 300);
         assertEquals(orderTable.getState(), mockState);
     }
+
+    @Test
+    public void whenAnOrderTableIsCreatedWithEmptyConstructorItShouldEqualItsCorrespondingProperties() {
+        orderTable = new OrderTable();
+
+        assertEquals(orderTable.getCustomerOrder(), null);
+        assertEquals(orderTable.getId(), null);
+        assertEquals(orderTable.getSize(), null);
+        assertEquals(orderTable.getX(), null);
+        assertEquals(orderTable.getY(), null);
+        assertEquals(orderTable.getState(), null);
+    }
 }
