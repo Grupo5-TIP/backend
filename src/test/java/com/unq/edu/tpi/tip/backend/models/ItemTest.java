@@ -102,7 +102,7 @@ public class ItemTest {
     @Test
     public void comparingUsingHashCodeWithAmount2AndProductDistinctToNullHasHashCodeZero(){
         item = new Item(0, mockProduct);
-        assertEquals(item.hashCode(), 30832629);
+        assertEquals(item.hashCode(), 19082351);
     }
 
     @Test
