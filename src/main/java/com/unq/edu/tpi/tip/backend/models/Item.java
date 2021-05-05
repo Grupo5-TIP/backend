@@ -29,6 +29,7 @@ public class Item implements Serializable
     @JsonIgnore
     @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "customerOrder_id")
+    @Getter
     @Setter
     private CustomerOrder customerOrder;
 

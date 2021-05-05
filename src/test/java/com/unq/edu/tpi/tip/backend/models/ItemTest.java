@@ -20,8 +20,12 @@ public class ItemTest {
     }
     @Test
     public void whenAnItemIsCreatedWithConstructorItShouldEqualItsCorrespondingProperties() {
+        CustomerOrder customerOrderMock = mock(CustomerOrder.class);
+        item.setCustomerOrder(customerOrderMock);
+        assertEquals(item.getId(), null);
         assertEquals(item.getAmount(), 1);
         assertEquals(item.getProduct(), mockProduct);
+        assertEquals(item.getCustomerOrder(), customerOrderMock);
     }
     @Test
     public void whenAnItemIsAskedForItsEqualItShouldHaveTheSameAmountAndProductIfItsTheSameItem() {
@@ -97,12 +101,6 @@ public class ItemTest {
     public void comparingUsingHashCodeWithAmount2AndProductNullHasHashCode62(){
         item = new Item(2, null);
         assertEquals(item.hashCode(), 62);
-    }
-
-    @Test
-    public void comparingUsingHashCodeWithAmount2AndProductDistinctToNullHasHashCodeZero(){
-        item = new Item(0, mockProduct);
-        assertEquals(item.hashCode(), 19082351);
     }
 
     @Test
