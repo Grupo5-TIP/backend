@@ -1,6 +1,7 @@
 package com.unq.edu.tpi.tip.backend.models;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -18,8 +19,6 @@ public abstract class State {
 
     @OneToMany
     protected List<OrderTable> orderTable;
-
-    public State() {}
 
     public State(String state) {
         this.state = state;

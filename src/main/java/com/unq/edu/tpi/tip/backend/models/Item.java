@@ -10,16 +10,18 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "item")
-@Getter
-@Setter
 @NoArgsConstructor
 public class Item implements Serializable
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
     private Long id;
+
+    @Getter
     private Integer amount;
 
+    @Getter
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
@@ -27,6 +29,7 @@ public class Item implements Serializable
     @JsonIgnore
     @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "customerOrder_id")
+    @Setter
     private CustomerOrder customerOrder;
 
     public Item(Integer amount, Product product) {
