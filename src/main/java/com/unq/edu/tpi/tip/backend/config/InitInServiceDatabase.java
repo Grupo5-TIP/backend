@@ -16,21 +16,12 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 
-@Service
+@Component
 public class InitInServiceDatabase {
     @Value("${spring.datasource.driverClassName:NONE}")
     private String className;
 
-    @Autowired
-    private OrderTableService orderTableService;
-
-    @Autowired
-    private ProductService productService;
-
-    @Autowired
-    private StateService stateService;
-
-    /*private final OrderTableService orderTableService;
+    private final OrderTableService orderTableService;
 
     private final ProductService productService;
 
@@ -40,7 +31,7 @@ public class InitInServiceDatabase {
         this.orderTableService = orderTableService;
         this.productService = productService;
         this.stateService = stateService;
-    }*/
+    }
 
     @PostConstruct
     public void initialize() throws Exception {
