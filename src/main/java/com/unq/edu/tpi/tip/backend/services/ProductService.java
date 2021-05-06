@@ -17,9 +17,9 @@ public class ProductService
 	private final ProductRepository productRepository;
 	private final ProductMapper productMapper;
 
-	public ProductService(ProductRepository productRepository){
+	public ProductService(ProductRepository productRepository, ProductMapper productMapper){
 		this.productRepository = productRepository;
-		this.productMapper = new ProductMapper();
+		this.productMapper = productMapper;
 	}
 
 	public List<ProductDTO> getAll()
@@ -30,8 +30,7 @@ public class ProductService
 		return productDTOS;
 	}
 
-	@ExceptionAspect
-	public Product createProduct(Product product) throws Exception {
+	public Product createProduct(Product product) {
 		Product newProduct = new Product(product.getName(),
 				product.getDescription(),
 				product.getPrice(),

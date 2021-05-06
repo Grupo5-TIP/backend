@@ -1,5 +1,6 @@
 package com.unq.edu.tpi.tip.backend.controllers;
 
+import com.unq.edu.tpi.tip.backend.aspects.ExceptionAspect;
 import com.unq.edu.tpi.tip.backend.models.dtos.ProductDTO;
 import com.unq.edu.tpi.tip.backend.services.ProductService;
 import org.springframework.http.MediaType;
@@ -23,6 +24,7 @@ public class ProductController
 	}
 
 	@GetMapping(path = "", produces = { MediaType.APPLICATION_JSON_VALUE })
+	@ExceptionAspect
 	public ResponseEntity<?> getAll()
 	{
 		List<ProductDTO> productsDTO = productService.getAll();
