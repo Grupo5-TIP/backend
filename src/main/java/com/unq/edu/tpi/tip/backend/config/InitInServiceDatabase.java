@@ -1,12 +1,17 @@
-package com.unq.edu.tpi.tip.backend.services;
+
+package com.unq.edu.tpi.tip.backend.config;
 
 import com.unq.edu.tpi.tip.backend.exceptions.StateNotFoundException;
 import com.unq.edu.tpi.tip.backend.models.AvailableState;
 import com.unq.edu.tpi.tip.backend.models.OrderTable;
 import com.unq.edu.tpi.tip.backend.models.Product;
 import com.unq.edu.tpi.tip.backend.models.UsedState;
+import com.unq.edu.tpi.tip.backend.services.OrderTableService;
+import com.unq.edu.tpi.tip.backend.services.ProductService;
+import com.unq.edu.tpi.tip.backend.services.StateService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
@@ -24,6 +29,18 @@ public class InitInServiceDatabase {
 
     @Autowired
     private StateService stateService;
+
+    /*private final OrderTableService orderTableService;
+
+    private final ProductService productService;
+
+    private final StateService stateService;
+
+    public InitInServiceDatabase(OrderTableService orderTableService,ProductService productService, StateService stateService){
+        this.orderTableService = orderTableService;
+        this.productService = productService;
+        this.stateService = stateService;
+    }*/
 
     @PostConstruct
     public void initialize() throws Exception {

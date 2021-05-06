@@ -5,7 +5,6 @@ import com.unq.edu.tpi.tip.backend.models.State;
 import com.unq.edu.tpi.tip.backend.repositories.StateRepository;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;

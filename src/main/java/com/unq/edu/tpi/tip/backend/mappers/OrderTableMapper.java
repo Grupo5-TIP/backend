@@ -2,10 +2,13 @@ package com.unq.edu.tpi.tip.backend.mappers;
 
 import com.unq.edu.tpi.tip.backend.models.OrderTable;
 import com.unq.edu.tpi.tip.backend.models.dtos.OrderTableDTO;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class OrderTableMapper {
     public List<OrderTableDTO> mapEntitiesIntoDTOs(Iterable<OrderTable> entities) {
         List<OrderTableDTO> dtos = new ArrayList<>();
