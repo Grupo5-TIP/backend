@@ -1,7 +1,5 @@
 package com.unq.edu.tpi.tip.backend.controllers;
 
-import com.fasterxml.jackson.annotation.JsonAutoDetect;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -9,8 +7,6 @@ import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotHaveOrdersException;
 import com.unq.edu.tpi.tip.backend.mappers.OrderMapper;
 import com.unq.edu.tpi.tip.backend.models.CustomerOrder;
 import com.unq.edu.tpi.tip.backend.models.Item;
-import com.unq.edu.tpi.tip.backend.models.OrderTable;
-import com.unq.edu.tpi.tip.backend.models.State;
 import com.unq.edu.tpi.tip.backend.models.dtos.OrderDTO;
 import com.unq.edu.tpi.tip.backend.services.OrderService;
 import org.junit.Before;
@@ -20,7 +16,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.util.NestedServletException;
@@ -36,11 +31,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(MockitoJUnitRunner.class)
-public class OrderControllerTest{
-
-	private MockMvc mockMvc;
+public class OrderControllerTest extends TemplateControllerTest {
 	List<OrderDTO> orderDTOS;
-	ObjectMapper mapper;
 
 	@InjectMocks
 	private OrderController orderController;
@@ -57,12 +49,6 @@ public class OrderControllerTest{
 		mockMvc = MockMvcBuilders.standaloneSetup(orderController)
 				.build();
 		orderDTOS = new ArrayList<>();
-		mapper = new ObjectMapper()
-				.findAndRegisterModules()
-				.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-				.configure(DeserializationFeature.UNWRAP_ROOT_VALUE, false)
-				.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false);
-		//mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.PUBLIC_ONLY);
 	}
 
 	@Test
@@ -140,16 +126,5 @@ public class OrderControllerTest{
 		assertNotNull(response);
 		//Object object = mapper.readValue(response.getBytes(), OrderDTO.class);
 		//assertTrue(object instanceof UserApi);
-	}
-
-	/*
-	 * converts a Java object into JSON representation
-	 */
-	public  String asJsonString(final Object obj) {
-		try {
-			return mapper.writeValueAsString(obj);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
 	}
 }

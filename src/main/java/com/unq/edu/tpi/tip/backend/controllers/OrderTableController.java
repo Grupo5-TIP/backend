@@ -30,12 +30,12 @@ public class OrderTableController {
         return ResponseEntity.ok(tablesDTO);
     }
 
-    @ExceptionAspect
+    /*@ExceptionAspect
     @PostMapping(path = "", produces = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<?> createState() throws TableDoesNotHaveOrdersException
     {
         List<OrderTableDTO> tablesDTO = orderTableService.getAll();
 
         return ResponseEntity.ok(tablesDTO);
-    }
+    }*/
 }
