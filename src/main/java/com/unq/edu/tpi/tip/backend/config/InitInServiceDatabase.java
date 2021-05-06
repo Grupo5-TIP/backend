@@ -9,10 +9,8 @@ import com.unq.edu.tpi.tip.backend.models.UsedState;
 import com.unq.edu.tpi.tip.backend.services.OrderTableService;
 import com.unq.edu.tpi.tip.backend.services.ProductService;
 import com.unq.edu.tpi.tip.backend.services.StateService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
 
 import javax.annotation.PostConstruct;
 
