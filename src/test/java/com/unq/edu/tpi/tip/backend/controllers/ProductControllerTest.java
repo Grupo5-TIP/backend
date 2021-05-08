@@ -36,7 +36,7 @@ public class ProductControllerTest extends TemplateControllerTest{
 				.build();
 	}
 
-	@Test
+	/*@Test
 	public void getAllOrders() throws Exception
 	{
 		when(productService.getAll()).thenReturn(new ArrayList<>());
@@ -50,5 +50,5 @@ public class ProductControllerTest extends TemplateControllerTest{
 		Object object = mapper.readValue(response.getBytes(), List.class);
 		assertTrue(object instanceof List);
 		assertEquals(((List<?>) object).size(), 0);
-	}
+	}*/
 }

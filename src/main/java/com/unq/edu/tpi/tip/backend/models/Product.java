@@ -33,6 +33,8 @@ public class Product implements Serializable{
 	private Double price;
 	@Getter
 	private String image;
+	@Getter
+	private String category;
 
 	@Nullable
 	@JsonIgnore
@@ -41,12 +43,13 @@ public class Product implements Serializable{
 	@Getter
 	private List<Item> items;
 
-	public Product(String name, String description, Double price, String image) {
+	public Product(String name, String description, Double price, String image, String category) {
 		this.name = name;
 		this.description = description;
 		this.price = price;
 		this.image = image;
 		this.items = new ArrayList();
+		this.category = category;
 	}
 
 	@Override public boolean equals(Object o)

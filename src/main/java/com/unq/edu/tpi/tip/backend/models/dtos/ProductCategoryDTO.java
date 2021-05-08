@@ -4,15 +4,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
-public class ProductDTO
-{
-	private Long id;
-	private String name;
-	private String description;
-	private Double price;
-	private String image;
+public class ProductCategoryDTO{
 	private String category;
+	private List<ProductDTO> productsDTO = new ArrayList<>();
 }

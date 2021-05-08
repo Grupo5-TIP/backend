@@ -17,7 +17,7 @@ public class ProductTest {
 
     @BeforeEach
     public void setUp(){
-        aProduct = new Product("Agua tonica", "arrolla la sed", 100.0, "");
+        aProduct = new Product("Agua tonica", "arrolla la sed", 100.0, "", "Bebidas");
     }
     @Test
     public void whenAProductIsCreatedWithConstructorItShouldEqualItsCorrespondingProperties() {
@@ -33,7 +33,7 @@ public class ProductTest {
 
     @Test
     public void whenAProductIsAskedForItsEqualItShouldHaveTheSameNameDescriptionAndPriceIfItsTheSameObject() {
-        Product tempProduct2 = new Product("Agua tonica", "arrolla la sed", 100.0, "");
+        Product tempProduct2 = new Product("Agua tonica", "arrolla la sed", 100.0, "", "bebidas");
 
         assertEquals(aProduct, tempProduct2);
     }

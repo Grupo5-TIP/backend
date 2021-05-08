@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.HashMap;
 import java.util.List;
 
 @Controller
@@ -27,7 +28,8 @@ public class ProductController
 	@ExceptionAspect
 	public ResponseEntity<?> getAll()
 	{
-		List<ProductDTO> productsDTO = productService.getAll();
+		//List<ProductDTO> productsDTO = productService.getAll();
+		HashMap<String, List<ProductDTO>> productsDTO = productService.getAll();
 
 		return ResponseEntity.ok(productsDTO);
 	}

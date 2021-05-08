@@ -41,11 +41,11 @@ public class InitInServiceDatabase {
     }
 
     private void fireInitialDataProducts() throws Exception {
-        productService.createProduct(new Product("Coca Cola","Coca Cola 2 lts", 200.0, "https://bit.ly/2Qx0RML"));
-        productService.createProduct(new Product("Milanesa con fritas","Milanesa de ternera con papas bastón", 650.0, "https://bit.ly/3v3IMov"));
-        productService.createProduct(new Product("Fideos a la bolognesa","Coca Cola", 450.0, "https://bit.ly/2Q4pSz2"));
-        productService.createProduct(new Product("Matambre con rusa","Matambre de ternera con ensalada rusa", 400.0, "https://bit.ly/3dqddiw"));
-        productService.createProduct(new Product("Tiramisu","Autentico tiramisu italiano", 350.0, "https://bit.ly/3gfRICZ"));
+        productService.createProduct(new Product("Coca Cola","Coca Cola 2 lts", 200.0, "https://bit.ly/2Qx0RML", "Bebidas"));
+        productService.createProduct(new Product("Milanesa con fritas","Milanesa de ternera con papas bastón", 650.0, "https://bit.ly/3v3IMov", "Platos"));
+        productService.createProduct(new Product("Fideos a la bolognesa","Coca Cola", 450.0, "https://bit.ly/2Q4pSz2", "Platos"));
+        productService.createProduct(new Product("Matambre con rusa","Matambre de ternera con ensalada rusa", 400.0, "https://bit.ly/3dqddiw", "Platos"));
+        productService.createProduct(new Product("Tiramisu","Autentico tiramisu italiano", 350.0, "https://bit.ly/3gfRICZ", "Postres"));
     }
 
     private void fireInitialDataStates() {
