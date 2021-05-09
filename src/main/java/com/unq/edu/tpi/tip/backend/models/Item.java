@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.context.annotation.Lazy;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -43,8 +44,6 @@ public class Item implements Serializable
 
         Item item = (Item) o;
 
-        if (amount != null ? !amount.equals(item.amount) : item.amount != null)
-            return false;
         return product != null ? product.equals(item.product) : item.product == null;
     }
 
