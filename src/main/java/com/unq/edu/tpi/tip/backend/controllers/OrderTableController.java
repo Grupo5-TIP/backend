@@ -2,7 +2,7 @@ package com.unq.edu.tpi.tip.backend.controllers;
 
 import com.unq.edu.tpi.tip.backend.aspects.ExceptionAspect;
 import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotHaveOrdersException;
-import com.unq.edu.tpi.tip.backend.models.dtos.OrderDTO;
+import com.unq.edu.tpi.tip.backend.models.Item;
 import com.unq.edu.tpi.tip.backend.models.dtos.OrderTableDTO;
 import com.unq.edu.tpi.tip.backend.services.OrderTableService;
 import org.springframework.http.MediaType;
@@ -30,12 +30,14 @@ public class OrderTableController {
         return ResponseEntity.ok(tablesDTO);
     }
 
-    /*@ExceptionAspect
-    @PostMapping(path = "", produces = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<?> createState() throws TableDoesNotHaveOrdersException
+    @ExceptionAspect
+    @GetMapping(path = "/{tableId}", produces = { MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<?> getAllItemsFromTable(@PathVariable("tableId") Long tableId)
+            throws TableDoesNotHaveOrdersException
     {
-        List<OrderTableDTO> tablesDTO = orderTableService.getAll();
 
-        return ResponseEntity.ok(tablesDTO);
-    }*/
+        List<Item> items = orderTableService.getAllItemsFromTable(tableId);
+
+        return ResponseEntity.ok(items);
+    }
 }

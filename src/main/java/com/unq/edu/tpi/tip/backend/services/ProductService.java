@@ -24,59 +24,27 @@ public class ProductService
 		this.productMapper = productMapper;
 	}
 
-	/*public static void main(String[] args)
-	{
-		List<ProductDTO>  prods = getAll();
-	}
-	*/
-	//public List<ProductDTO> getAll()
-	//public static List<ProductDTO> getAll()
-	public HashMap<String, List<ProductDTO>> getAll()
+	public Map<String, List<ProductDTO>> getAll()
 	{
 		Iterable<Product> products = this.productRepository.findAll();
 		List<ProductDTO> productDTOS = this.productMapper.mapEntitiesIntoDTOs(products);
-		//List<ProductDTO> productDTOS = createProds();
 
-		HashMap<String, List<ProductDTO>> productCategoryDTOS = new HashMap();
+		Map<String, List<ProductDTO>> productCategoryDTOS = new HashMap();
 
 		for (ProductDTO aProductDTO : productDTOS){
 			if (productCategoryDTOS.containsKey( aProductDTO.getCategory())){
 				List<ProductDTO> prodSet = productCategoryDTOS.get(aProductDTO.getCategory());
-				List<ProductDTO> prodSet2 = prodSet.stream().collect(Collectors.toList());
-				prodSet2.add(aProductDTO);
-				productCategoryDTOS.put(aProductDTO.getCategory(), prodSet2);
+				prodSet = prodSet.stream().collect(Collectors.toList());
+				prodSet.add(aProductDTO);
+				productCategoryDTOS.replace(aProductDTO.getCategory(), prodSet );
 			}else{
 				productCategoryDTOS.put(aProductDTO.getCategory(), Arrays.asList(aProductDTO));
 			}
 		}
 
-		//return productDTOS;
 		return productCategoryDTOS;
 	}
 
-	private static List<ProductDTO> createProds()
-	{
-		List<ProductDTO> prods = new ArrayList<>();
-		ProductDTO prod = new ProductDTO();
-		prod.setName("test");
-		prod.setCategory("bebidas");
-
-		prods.add(prod);
-
-		prod = new ProductDTO();
-		prod.setName("test2");
-		prod.setCategory("bebidas");
-
-		prods.add(prod);
-
-		prod = new ProductDTO();
-		prod.setName("test3");
-		prod.setCategory("platos");
-
-		prods.add(prod);
-
-		return prods;
-	}
 
 	public Product createProduct(Product product) {
 		Product newProduct = new Product(product.getName(),

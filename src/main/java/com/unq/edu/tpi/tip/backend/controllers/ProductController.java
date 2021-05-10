@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/api/products")
@@ -29,7 +30,7 @@ public class ProductController
 	public ResponseEntity<?> getAll()
 	{
 		//List<ProductDTO> productsDTO = productService.getAll();
-		HashMap<String, List<ProductDTO>> productsDTO = productService.getAll();
+		Map<String, List<ProductDTO>> productsDTO = productService.getAll();
 
 		return ResponseEntity.ok(productsDTO);
 	}

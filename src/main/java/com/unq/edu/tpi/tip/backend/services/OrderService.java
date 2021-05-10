@@ -11,6 +11,7 @@ import com.unq.edu.tpi.tip.backend.repositories.OrderRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,12 +34,14 @@ public class OrderService
 		List<CustomerOrder> customerOrders = this.orderRepository.findAllByTableId(tableId).orElseThrow(
 				() -> new TableDoesNotHaveOrdersException(tableId));
 
+
 		customerOrders = customerOrders.stream()
 				.filter((order)-> !order.getIsChecked())
 				.collect(Collectors.toList());
 
 		return orderMapper.mapEntitiesIntoDTOs(customerOrders);
 	}
+
 
 	public OrderDTO createOrder(OrderDTO orderDTO) throws OrderEmptyException
 	{
@@ -57,6 +60,7 @@ public class OrderService
 		return orderMapper.mapEntityIntoDTO(customerOrder);
 	}
 
+	@Transactional
 	public List<OrderDTO> getAll()
 	{
 		Iterable<CustomerOrder> customerOrders = this.orderRepository.findAll();
