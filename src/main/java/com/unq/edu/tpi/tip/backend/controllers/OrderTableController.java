@@ -40,4 +40,12 @@ public class OrderTableController {
 
         return ResponseEntity.ok(items);
     }
+
+    @ExceptionAspect
+    @GetMapping(path = "/{tableId}", produces = { MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<?> getAll(@PathVariable("tableId") Long tableId) throws TableDoesNotHaveOrdersException {
+        List<Item> items = orderTableService.getAllItemsFromTable(tableId);
+
+        return ResponseEntity.ok(items);
+    }
 }

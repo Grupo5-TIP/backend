@@ -18,37 +18,40 @@ import java.util.List;
 public class OrderTableService {
     private final OrderTableRepository orderTableRepository;
     private final OrderTableMapper orderTableMapper;
-    private final OrderService customerOrderService;
+    private final OrderService orderService;
 
-    public OrderTableService(OrderTableRepository orderTableRepository, OrderTableMapper orderTableMapper, OrderService customerOrderService) {
+    public OrderTableService(OrderTableRepository orderTableRepository, OrderTableMapper orderTableMapper, OrderService orderService) {
         this.orderTableRepository = orderTableRepository;
         this.orderTableMapper = orderTableMapper;
-        this.customerOrderService = customerOrderService;
+        this.orderService = orderService;
     }
+
     public List<OrderTableDTO> getAll() {
         Iterable<OrderTable> tables = this.orderTableRepository.findAll();
         return orderTableMapper.mapEntitiesIntoDTOs(tables);
     }
+
     public void save(OrderTable orderTable) {
         orderTableRepository.save(orderTable);
     }
 
-
-	public List<Item> getAllItemsFromTable(Long tableId) throws TableDoesNotHaveOrdersException
-    {
-        List<OrderDTO> orderDTOS = customerOrderService.getOrdersByTableID(tableId);
+    @Transactional(readOnly=true)
+    public List<Item> getAllItemsFromTable(Long tableId) throws TableDoesNotHaveOrdersException {
+        List<OrderDTO> orders = orderService.getOrdersByTableID(tableId);
         List<Item> items = new ArrayList<>();
 
-        for (OrderDTO anOrderDto : orderDTOS){
-            for(Item anItem : anOrderDto.getOrderedItems()){
-                if (items.contains(anItem) ){
-                    Item _anItem = items.get(items.indexOf(anItem));
-                    _anItem.setAmount(_anItem.getAmount() + anItem.getAmount());
-                }else {
-                    items.add(anItem);
+        orders.stream().forEach(order -> {
+            order.getOrderedItems().stream().forEach(item -> {
+                int index = items.indexOf(item);
+                if (index == -1) {
+                    items.add(item);
+                } else {
+                    Item tempItem = items.get(index);
+                    tempItem.setAmount(tempItem.getAmount() + item.getAmount());
                 }
-            }
-        }
+            });
+        });
+
         return items;
-	}
+    }
 }

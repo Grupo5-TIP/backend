@@ -11,7 +11,7 @@ import com.unq.edu.tpi.tip.backend.repositories.OrderRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -31,8 +31,8 @@ public class OrderService
 
 	public List<OrderDTO> getOrdersByTableID(Long tableId) throws TableDoesNotHaveOrdersException
 	{
-		List<CustomerOrder> customerOrders = this.orderRepository.findAllByTableId(tableId).orElseThrow(
-				() -> new TableDoesNotHaveOrdersException(tableId));
+		List<CustomerOrder> customerOrders = this.orderRepository.findAllByTableId(tableId)
+				.orElse(new ArrayList<>());
 
 
 		customerOrders = customerOrders.stream()
