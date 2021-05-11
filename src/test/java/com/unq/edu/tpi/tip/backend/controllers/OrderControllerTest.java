@@ -67,16 +67,21 @@ public class OrderControllerTest extends TemplateControllerTest {
 		assertEquals(((List<?>) object).size(), 0);
 	}
 
-	@Test (expected = NestedServletException.class)
-	public void whenTryToGetOrdersByTableIDWhichDoesNotExistThrows404Status() throws Exception
+	@Test
+	public void whenTryToGetOrdersByTableIDWhichDoesNotExistReturns200AndEmptyList() throws Exception
 	{
-		when(orderService.getOrdersByTableID(1L)).thenThrow(new TableDoesNotHaveOrdersException(1L));
+		when(orderService.getOrdersByTableID(1L)).thenReturn(new ArrayList<>());
 
-		mockMvc.perform(get("/api/orders/1"))
-				.andExpect(status().isNotFound())
+		MvcResult result = mockMvc.perform(get("/api/orders/1"))
+				.andExpect(status().isOk())
 				.andReturn();
 
-		//TODO revisar porque dvuelve un NestedServletException en lugar de TableDoesNotHaveOrdersException
+		String response = result.getResponse().getContentAsString();
+		assertNotNull(response);
+		Object object = mapper.readValue(response.getBytes(), List.class);
+		assertTrue(object instanceof List);
+		assertEquals(((List<OrderDTO>) object).size(), 0);
+
 	}
 
 	@Test
@@ -102,20 +107,8 @@ public class OrderControllerTest extends TemplateControllerTest {
 	@Test
 	public void createUser() throws Exception
 	{
-		//TODO Revisar si es suficiente aunque el response sea vacio por no tener objetos o se necesita crear una clase
-		// separada para tests de integración con objetos reales
-
-		Item orderedItems = mock(Item.class);
 		OrderDTO orderDTO = new OrderDTO();
-		//orderDTO.setId(1L);
-		//orderDTO.setTableId(1L);
-		//orderDTO.setOrderedItems(Arrays.asList(orderedItems));
 		orderDTO.setOrderedItems(new ArrayList<>());
-		CustomerOrder customerOrder =  new CustomerOrder(); //mock(CustomerOrder.class);
-
-
-		//when(orderService.createOrder(orderDTO)).thenReturn(orderDTO);
-		//when(orderMapper.mapToPojo(orderDTO)).thenReturn(customerOrder);
 
 		MvcResult result = mockMvc.perform(
 				post("/api/orders").contentType(MediaType.APPLICATION_JSON).content(asJsonString(orderDTO)))
@@ -124,7 +117,6 @@ public class OrderControllerTest extends TemplateControllerTest {
 
 		String response = result.getResponse().getContentAsString();
 		assertNotNull(response);
-		//Object object = mapper.readValue(response.getBytes(), OrderDTO.class);
-		//assertTrue(object instanceof UserApi);
+
 	}
 }

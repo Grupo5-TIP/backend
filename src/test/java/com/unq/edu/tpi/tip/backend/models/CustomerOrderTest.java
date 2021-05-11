@@ -33,4 +33,13 @@ public class CustomerOrderTest {
 
         assertEquals(order.hasOrderedItems(), true);
     }
+
+    @Test
+    public void testSetIdAndSetTableId() {
+        order.setId(4L);
+        order.setTableId(5L);
+
+        assertEquals(order.getId().longValue(), 4L);
+        assertEquals(order.getTableId().longValue(), 5L);
+    }
 }

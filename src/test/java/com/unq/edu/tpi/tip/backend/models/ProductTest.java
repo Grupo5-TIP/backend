@@ -29,6 +29,7 @@ public class ProductTest {
         assertEquals(aProduct.getId(), null);
         assertEquals(aProduct.getImage(), "");
         assertEquals(aProduct.getItems(), new ArrayList());
+        assertEquals(aProduct.getCategory(), "Bebidas");
     }
 
     @Test
@@ -77,5 +78,5 @@ public class ProductTest {
         assertNotEquals(aProduct, mockProduct);
 
     }
-            // product.name != null
+
 }

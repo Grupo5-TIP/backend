@@ -26,6 +26,9 @@ public class ItemTest {
         assertEquals(item.getAmount(), 1);
         assertEquals(item.getProduct(), mockProduct);
         assertEquals(item.getCustomerOrder(), customerOrderMock);
+
+        item.setAmount(2);
+        assertEquals(item.getAmount(), 2);
     }
     @Test
     public void whenAnItemIsAskedForItsEqualItShouldHaveTheSameAmountAndProductIfItsTheSameItem() {
@@ -86,21 +89,9 @@ public class ItemTest {
     }
 
     @Test
-    public void comparingAnItemWithProductDistinctNullWithAnotherItemWithProductDistinctNullReturnsTrue(){
-        Item anotherItem = new Item(2, mockProduct);
-        assertNotEquals(item, anotherItem);
-    }
-
-    @Test
     public void comparingUsingHashCodeWithAmountAndProductNullHasHashCodeZero(){
         item = new Item(null, null);
         assertEquals(item.hashCode(), 0);
-    }
-
-    @Test
-    public void comparingUsingHashCodeWithAmount2AndProductNullHasHashCode62(){
-        item = new Item(2, null);
-        assertEquals(item.hashCode(), 62);
     }
 
     @Test

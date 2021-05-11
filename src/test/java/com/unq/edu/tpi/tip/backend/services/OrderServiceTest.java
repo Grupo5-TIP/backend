@@ -9,7 +9,6 @@ import com.unq.edu.tpi.tip.backend.models.dtos.OrderDTO;
 import com.unq.edu.tpi.tip.backend.repositories.OrderRepository;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
@@ -47,10 +46,11 @@ public class OrderServiceTest
 		orderDTOMock = mock(OrderDTO.class);
 	}
 
-	@Test(expected = TableDoesNotHaveOrdersException.class)
-	public void whenIGetOrdersByTableIDWhichDoesNotExistRaiseATableDoesNotHaveOrdersException()
+	@Test
+	public void whenIGetOrdersByTableIDWhichDoesNotExistReturnAnEmptyList()
 			throws TableDoesNotHaveOrdersException{
-		orderService.getOrdersByTableID(1l);
+		List<OrderDTO> orderDTOS = orderService.getOrdersByTableID(1l);
+		assertTrue(orderDTOS.isEmpty());
 	}
 
 	@Test

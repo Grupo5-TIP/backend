@@ -36,7 +36,7 @@ public class OrderTableService {
     }
 
     @Transactional(readOnly=true)
-    public List<Item> getAllItemsFromTable(Long tableId) throws TableDoesNotHaveOrdersException {
+    public List<Item> getAllItemsFromTable(Long tableId) {
         List<OrderDTO> orders = orderService.getOrdersByTableID(tableId);
         List<Item> items = new ArrayList<>();
 

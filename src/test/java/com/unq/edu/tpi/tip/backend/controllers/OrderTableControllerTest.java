@@ -58,4 +58,20 @@ public class OrderTableControllerTest  extends TemplateControllerTest{
 		assertEquals(((List<?>) object).size(), 0);
 	}
 
+	@Test
+	public void getAllItemsFromTable() throws Exception
+	{
+		when(orderTableService.getAllItemsFromTable(1L)).thenReturn(new ArrayList<>());
+
+		MvcResult result = mockMvc.perform(get("/api/tables/1"))
+				.andExpect(status().isOk())
+				.andReturn();
+
+		String response = result.getResponse().getContentAsString();
+		assertNotNull(response);
+		Object object = mapper.readValue(response.getBytes(), List.class);
+		assertTrue(object instanceof List);
+		assertEquals(((List<?>) object).size(), 0);
+	}
+
 }
