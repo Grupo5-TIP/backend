@@ -96,16 +96,16 @@ public class OrderTableServiceTest {
 		Product aProductMock = new Product("Agua tonica", "arrolla la sed", 100.0, "", "Bebidas"); //mock(Product.class);
 
 		Item itemMock = mock(Item.class);
-		when(itemMock.getAmount()).thenReturn(1);
-		when(itemMock.getProduct()).thenReturn(aProductMock);
+		//when(itemMock.getAmount()).thenReturn(1);
+		//when(itemMock.getProduct()).thenReturn(aProductMock);
 
 		List<Item> items = Arrays.asList(itemMock);
 
 		when(orderDTOMock.getOrderedItems()).thenReturn(items);
 
 		Item anotherItemMock = mock(Item.class);
-		when(anotherItemMock.getAmount()).thenReturn(2);
-		when(anotherItemMock.getProduct()).thenReturn(aProductMock);
+		//when(anotherItemMock.getAmount()).thenReturn(2);
+		//when(anotherItemMock.getProduct()).thenReturn(aProductMock);
 		List<Item> anotherItems = Arrays.asList(anotherItemMock);
 
 		when(anotherDTOMock.getOrderedItems()).thenReturn(anotherItems);

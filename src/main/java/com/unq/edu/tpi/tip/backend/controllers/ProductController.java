@@ -29,7 +29,6 @@ public class ProductController
 	@ExceptionAspect
 	public ResponseEntity<?> getAll()
 	{
-		//List<ProductDTO> productsDTO = productService.getAll();
 		Map<String, List<ProductDTO>> productsDTO = productService.getAll();
 
 		return ResponseEntity.ok(productsDTO);
