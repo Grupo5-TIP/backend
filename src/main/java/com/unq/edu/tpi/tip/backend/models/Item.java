@@ -4,29 +4,37 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "item")
-@Getter
-@Setter
 @NoArgsConstructor
 public class Item implements Serializable
 {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Getter
     private Long id;
+
+    @Getter
+    @Setter
     private Integer amount;
 
+    @Getter
     @ManyToOne
     @JoinColumn(name = "product_id")
+    @Fetch(FetchMode.JOIN)
     private Product product;
 
     @JsonIgnore
     @ManyToOne(cascade = {CascadeType.ALL})
     @JoinColumn(name = "customerOrder_id")
+    @Getter
+    @Setter
     private CustomerOrder customerOrder;
 
     public Item(Integer amount, Product product) {
@@ -43,15 +51,11 @@ public class Item implements Serializable
 
         Item item = (Item) o;
 
-        if (amount != null ? !amount.equals(item.amount) : item.amount != null)
-            return false;
         return product != null ? product.equals(item.product) : item.product == null;
     }
 
     @Override public int hashCode()
     {
-        int result = amount != null ? amount.hashCode() : 0;
-        result = 31 * result + (product != null ? product.hashCode() : 0);
-        return result;
+        return product != null ? product.hashCode() : 0;
     }
 }

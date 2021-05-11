@@ -1,7 +1,6 @@
 package com.unq.edu.tpi.tip.backend.models;
 
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
@@ -16,20 +15,26 @@ import java.util.List;
 
 @Entity
 @Table(name = "customerorder")
-@Getter
-@Setter
 public class CustomerOrder implements Serializable
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Getter
+	@Setter
 	private Long id;
 
 	@ManyToOne
+	@Getter
 	private OrderTable orderTable;
+	@Getter
+	@Setter
 	private Long tableId;
+	@Getter
 	private Boolean isChecked;
 
 	@OneToMany(cascade = {CascadeType.ALL}, mappedBy = "customerOrder")
+	@Getter
+	@Setter
 	List<Item> orderedItems;
 
 	public CustomerOrder() {
