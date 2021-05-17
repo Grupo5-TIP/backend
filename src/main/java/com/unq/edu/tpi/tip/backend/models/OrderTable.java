@@ -5,19 +5,39 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "order_table")
-@Getter
-@Setter
 @NoArgsConstructor
 public class OrderTable
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Getter
 	private Long id;
 
+	@Getter
+	@ManyToOne
+	private State state;
+
+	@Getter
+	private Integer x;
+	@Getter
+	private Integer y;
+	@Getter
+	private Integer size;
+
 	@OneToMany
+	@Getter
 	private List<CustomerOrder> customerOrder;
+
+	public OrderTable(State state, Integer x, Integer y, Integer size) {
+		this.state = state;
+		this.x = x;
+		this.y = y;
+		this.size = size;
+		customerOrder = new ArrayList<>();
+	}
 }

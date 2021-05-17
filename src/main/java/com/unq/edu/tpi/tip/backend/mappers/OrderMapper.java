@@ -2,26 +2,20 @@ package com.unq.edu.tpi.tip.backend.mappers;
 
 import com.unq.edu.tpi.tip.backend.models.CustomerOrder;
 import com.unq.edu.tpi.tip.backend.models.dtos.OrderDTO;
+import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Component
 public class OrderMapper {
     public List<OrderDTO> mapEntitiesIntoDTOs(Iterable<CustomerOrder> entities) {
         List<OrderDTO> dtos = new ArrayList<>();
 
-        entities.forEach(e -> dtos.add(mapEntityIntoDTO(e)));
+        entities.forEach(e -> dtos.add(this.mapEntityIntoDTO(e)));
 
         return dtos;
-    }
-
-    public static OrderDTO mapEntityIntoDTO(CustomerOrder customerOrder)
-    {
-        OrderDTO orderDTO = new OrderDTO();
-        orderDTO.setId(customerOrder.getId());
-        orderDTO.setTableId(customerOrder.getTableId());
-        orderDTO.setOrderedItems(customerOrder.getOrderedItems());
-        return orderDTO;
     }
 
     public CustomerOrder mapToPojo(OrderDTO orderDTO)
@@ -33,7 +27,7 @@ public class OrderMapper {
         return customerOrder;
     }
 
-    public OrderDTO mapToDTO(CustomerOrder customerOrder)
+    public OrderDTO mapEntityIntoDTO(CustomerOrder customerOrder)
     {
         OrderDTO orderDTO = new OrderDTO();
         orderDTO.setId(customerOrder.getId());

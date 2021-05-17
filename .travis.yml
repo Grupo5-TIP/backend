@@ -1,0 +1,23 @@
+dist: trusty
+language: java
+# use Java 14
+jdk: openjdk8
+
+# see https://blog.travis-ci.com/2014-12-17-faster-builds-with-container-based-infrastructure
+sudo: false
+
+# cache the build tool's caches
+cache:
+  directories:
+    - $HOME/.m2
+
+branches:
+  only:
+    - main
+    - dev
+
+install:
+  - mvn clean install -Dmaven.compiler.target=1.8 -Dmaven.compiler.source=1.8
+
+script:
+  - mvn test -B

@@ -1,7 +1,6 @@
 package com.unq.edu.tpi.tip.backend.services;
 
 import com.unq.edu.tpi.tip.backend.exceptions.OrderEmptyException;
-import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotHaveOrdersException;
 import com.unq.edu.tpi.tip.backend.mappers.OrderMapper;
 import com.unq.edu.tpi.tip.backend.models.CustomerOrder;
 import com.unq.edu.tpi.tip.backend.models.Item;
@@ -11,8 +10,9 @@ import com.unq.edu.tpi.tip.backend.repositories.OrderRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -22,19 +22,25 @@ public class OrderService
 	private final ItemRepository itemRepository;
 	private final OrderMapper orderMapper;
 
-	public OrderService(OrderRepository orderRepository, ItemRepository itemRepository) {
+	public OrderService(OrderRepository orderRepository, ItemRepository itemRepository, OrderMapper orderMapper) {
 		this.orderRepository = orderRepository;
-		this.orderMapper = new OrderMapper();
+		this.orderMapper = orderMapper;
 		this.itemRepository = itemRepository;
 	}
 
-	public List<OrderDTO> getOrdersByTableID(Long tableId) throws TableDoesNotHaveOrdersException
+	public List<OrderDTO> getOrdersByTableID(Long tableId)
 	{
-		List<CustomerOrder> customerOrders = this.orderRepository.findAllByTableId(tableId).orElseThrow(
-				() -> new TableDoesNotHaveOrdersException(tableId));
+		List<CustomerOrder> customerOrders = this.orderRepository.findAllByTableId(tableId)
+				.orElse(new ArrayList<>());
+
+
+		customerOrders = customerOrders.stream()
+				.filter((order)-> !order.getIsChecked())
+				.collect(Collectors.toList());
 
 		return orderMapper.mapEntitiesIntoDTOs(customerOrders);
 	}
+
 
 	public OrderDTO createOrder(OrderDTO orderDTO) throws OrderEmptyException
 	{
@@ -50,9 +56,10 @@ public class OrderService
 		}
 
 		customerOrder = this.orderRepository.save(customerOrder);
-		return orderMapper.mapToDTO(customerOrder);
+		return orderMapper.mapEntityIntoDTO(customerOrder);
 	}
 
+	@Transactional
 	public List<OrderDTO> getAll()
 	{
 		Iterable<CustomerOrder> customerOrders = this.orderRepository.findAll();

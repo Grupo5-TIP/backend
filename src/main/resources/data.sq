@@ -1,0 +1,16 @@
+-- INSERT INTO customer_order (id, table_id) VALUES (1,1), (2,2), (3,3), (4,4);
+
+INSERT INTO product (id, description, name, price, image) VALUES (1,'Coca Cola','Coca Cola', 200, 'https://bit.ly/2Qx0RML');
+INSERT INTO product (id, description, name, price, image) VALUES (2,'Milanesa de ternera con papas bastón','Milanesa con fritas', 650, 'https://bit.ly/3v3IMov');
+INSERT INTO product (id, description, name, price, image) VALUES (3,'Fideos italianos con salsa de tomates','Fideos a la bolognesa', 450, 'https://bit.ly/2Q4pSz2');
+INSERT INTO product (id, description, name, price, image) VALUES (4,'Matambre de ternera con ensalada rusa','Matambre con rusa', 400, 'https://bit.ly/3dqddiw');
+INSERT INTO product (id, description, name, price, image) VALUES (5,'Autentico tiramisu italiano','Tiramisu', 350, 'https://bit.ly/3gfRICZ');
+
+INSERT INTO order_table(id, state_id) VALUES (1, 1);
+INSERT INTO order_table(id, state_id) VALUES (2, 1);
+
+INSERT INTO state (id, state) VALUES (1, "availableState");
+INSERT INTO state (id, state) VALUES (2, "usedState");
+
+INSERT INTO state_order_table (state_id, order_table_id) VALUES (1, 1);
+INSERT INTO state_order_table (state_id, order_table_id) VALUES (2, 2);
