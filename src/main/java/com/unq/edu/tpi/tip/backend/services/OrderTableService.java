@@ -36,16 +36,23 @@ public class OrderTableService {
     }
 
     @Transactional(readOnly=true)
-    public List<Item> getAllItemsFromTable(Long tableId) {
+    public List<Item> getAllItemsFromTable(Long tableId) throws TableDoesNotHaveOrdersException{
+
         List<OrderDTO> orders = orderService.getOrdersByTableID(tableId);
+        if (orders.isEmpty())
+        {
+            throw new TableDoesNotHaveOrdersException(tableId);
+        }
         List<Item> items = new ArrayList<>();
 
         orders.stream().forEach(order -> {
             order.getOrderedItems().stream().forEach(item -> {
                 int index = items.indexOf(item);
-                if (index == -1) {
+                if (index == -1)
+                {
                     items.add(item);
-                } else {
+                }
+                else {
                     Item tempItem = items.get(index);
                     tempItem.setAmount(tempItem.getAmount() + item.getAmount());
                 }

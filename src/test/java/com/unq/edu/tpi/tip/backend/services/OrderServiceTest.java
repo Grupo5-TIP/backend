@@ -46,11 +46,10 @@ public class OrderServiceTest
 		orderDTOMock = mock(OrderDTO.class);
 	}
 
-	@Test
+	@Test (expected = TableDoesNotHaveOrdersException.class)
 	public void whenIGetOrdersByTableIDWhichDoesNotExistReturnAnEmptyList()
 			throws TableDoesNotHaveOrdersException{
 		List<OrderDTO> orderDTOS = orderService.getOrdersByTableID(1l);
-		assertTrue(orderDTOS.isEmpty());
 	}
 
 	@Test

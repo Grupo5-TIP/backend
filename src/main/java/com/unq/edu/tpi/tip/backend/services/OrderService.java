@@ -1,6 +1,7 @@
 package com.unq.edu.tpi.tip.backend.services;
 
 import com.unq.edu.tpi.tip.backend.exceptions.OrderEmptyException;
+import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotHaveOrdersException;
 import com.unq.edu.tpi.tip.backend.mappers.OrderMapper;
 import com.unq.edu.tpi.tip.backend.models.CustomerOrder;
 import com.unq.edu.tpi.tip.backend.models.Item;
@@ -28,10 +29,10 @@ public class OrderService
 		this.itemRepository = itemRepository;
 	}
 
-	public List<OrderDTO> getOrdersByTableID(Long tableId)
+	public List<OrderDTO> getOrdersByTableID(Long tableId) throws TableDoesNotHaveOrdersException
 	{
 		List<CustomerOrder> customerOrders = this.orderRepository.findAllByTableId(tableId)
-				.orElse(new ArrayList<>());
+				.orElseThrow(() -> new TableDoesNotHaveOrdersException(tableId));
 
 
 		customerOrders = customerOrders.stream()
