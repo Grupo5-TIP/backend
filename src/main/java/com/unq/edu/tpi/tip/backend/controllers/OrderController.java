@@ -34,7 +34,7 @@ public class OrderController
 
 	@ExceptionAspect
 	@GetMapping(path = "", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public ResponseEntity<?> getAll() throws TableDoesNotHaveOrdersException
+	public ResponseEntity<?> getAll()
 	{
 		List<OrderDTO> ordersDTO = orderService.getAll();
 

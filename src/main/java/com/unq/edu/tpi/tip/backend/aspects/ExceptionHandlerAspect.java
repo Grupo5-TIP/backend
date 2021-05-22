@@ -22,7 +22,7 @@ public class ExceptionHandlerAspect{
 		}
 		catch (TableDoesNotHaveOrdersException ex)
 		{
-			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getMessage(), ex);
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage(), ex);
 		}
 		catch (OrderEmptyException ex)
 		{
