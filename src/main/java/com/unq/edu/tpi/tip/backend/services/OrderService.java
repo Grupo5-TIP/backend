@@ -1,13 +1,14 @@
 package com.unq.edu.tpi.tip.backend.services;
 
 import com.unq.edu.tpi.tip.backend.exceptions.OrderEmptyException;
-import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotHaveOrdersException;
+import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotExistException;
 import com.unq.edu.tpi.tip.backend.mappers.OrderMapper;
 import com.unq.edu.tpi.tip.backend.models.CustomerOrder;
 import com.unq.edu.tpi.tip.backend.models.Item;
 import com.unq.edu.tpi.tip.backend.models.dtos.OrderDTO;
 import com.unq.edu.tpi.tip.backend.repositories.ItemRepository;
 import com.unq.edu.tpi.tip.backend.repositories.OrderRepository;
+import com.unq.edu.tpi.tip.backend.repositories.OrderTableRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,17 +23,21 @@ public class OrderService
 	private final OrderRepository orderRepository;
 	private final ItemRepository itemRepository;
 	private final OrderMapper orderMapper;
+	private final OrderTableRepository orderTableRepository;
 
-	public OrderService(OrderRepository orderRepository, ItemRepository itemRepository, OrderMapper orderMapper) {
+	public OrderService(OrderRepository orderRepository, ItemRepository itemRepository, OrderMapper orderMapper, OrderTableRepository orderTableRepository) {
 		this.orderRepository = orderRepository;
 		this.orderMapper = orderMapper;
 		this.itemRepository = itemRepository;
+		this.orderTableRepository= orderTableRepository;
 	}
 
-	public List<OrderDTO> getOrdersByTableID(Long tableId) throws TableDoesNotHaveOrdersException
+	public List<OrderDTO> getOrdersByTableID(Long tableId) throws TableDoesNotExistException
 	{
-		List<CustomerOrder> customerOrders = this.orderRepository.findAllByTableId(tableId)
-				.orElseThrow(() -> new TableDoesNotHaveOrdersException(tableId));
+		orderTableRepository.findById(tableId).orElseThrow(
+				()-> new TableDoesNotExistException(tableId));
+
+		List<CustomerOrder> customerOrders = this.orderRepository.findAllByTableId(tableId).orElse(new ArrayList<>());
 
 
 		customerOrders = customerOrders.stream()

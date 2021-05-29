@@ -1,6 +1,6 @@
 package com.unq.edu.tpi.tip.backend.services;
 
-import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotHaveOrdersException;
+import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotExistException;
 import com.unq.edu.tpi.tip.backend.mappers.OrderTableMapper;
 import com.unq.edu.tpi.tip.backend.models.Item;
 import com.unq.edu.tpi.tip.backend.models.OrderTable;
@@ -36,13 +36,13 @@ public class OrderTableService {
     }
 
     @Transactional(readOnly=true)
-    public List<Item> getAllItemsFromTable(Long tableId) throws TableDoesNotHaveOrdersException{
+    public List<Item> getAllItemsFromTable(Long tableId) throws TableDoesNotExistException
+    {
+
+        orderTableRepository.findById(tableId).orElseThrow(
+                ()-> new TableDoesNotExistException(tableId));
 
         List<OrderDTO> orders = orderService.getOrdersByTableID(tableId);
-        if (orders.isEmpty())
-        {
-            throw new TableDoesNotHaveOrdersException(tableId);
-        }
         List<Item> items = new ArrayList<>();
 
         orders.stream().forEach(order -> {

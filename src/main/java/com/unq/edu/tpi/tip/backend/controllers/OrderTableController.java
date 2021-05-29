@@ -1,7 +1,7 @@
 package com.unq.edu.tpi.tip.backend.controllers;
 
 import com.unq.edu.tpi.tip.backend.aspects.ExceptionAspect;
-import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotHaveOrdersException;
+import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotExistException;
 import com.unq.edu.tpi.tip.backend.models.Item;
 import com.unq.edu.tpi.tip.backend.models.dtos.OrderTableDTO;
 import com.unq.edu.tpi.tip.backend.services.OrderTableService;
@@ -33,12 +33,13 @@ public class OrderTableController {
     @ExceptionAspect
     @GetMapping(path = "/{tableId}", produces = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<?> getAllItemsFromTable(@PathVariable("tableId") Long tableId)
-            throws TableDoesNotHaveOrdersException
+            throws TableDoesNotExistException
     {
 
         List<Item> items = orderTableService.getAllItemsFromTable(tableId);
 
         return ResponseEntity.ok(items);
     }
+
 
 }

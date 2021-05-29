@@ -1,7 +1,7 @@
 package com.unq.edu.tpi.tip.backend.services;
 
 
-import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotHaveOrdersException;
+import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotExistException;
 import com.unq.edu.tpi.tip.backend.mappers.OrderTableMapper;
 import com.unq.edu.tpi.tip.backend.models.Item;
 import com.unq.edu.tpi.tip.backend.models.OrderTable;
@@ -16,6 +16,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -51,23 +52,23 @@ public class OrderTableServiceTest {
 
 	}
 
-	@Test(expected = TableDoesNotHaveOrdersException.class)
+	@Test(expected = TableDoesNotExistException.class)
 	public void whenIGetAllItemsFromTableAndTableDoesNotHaveOrdersReturnAnEmptyItemList()
-			throws TableDoesNotHaveOrdersException
+			throws TableDoesNotExistException
 	{
 		orderTableService.getAllItemsFromTable(1L);
 	}
 
 	@Test
 	public void whenIGetAllItemsFromTableAndTableHasAnOrderWithTwoDifferentItemsMustReturnAListWithTwoItems()
-			throws TableDoesNotHaveOrdersException
+			throws TableDoesNotExistException
 	{
 		OrderDTO orderDTOMock = mock(OrderDTO.class);
 		OrderDTO anotherDTOMock = mock(OrderDTO.class);
 		List<OrderDTO> orders = Arrays.asList(orderDTOMock, anotherDTOMock);
 
 		when(orderService.getOrdersByTableID(anyLong())).thenReturn(orders);
-
+		when(orderTableRepository.findById(anyLong())).thenReturn(Optional.of(mock(OrderTable.class)) );
 		Item itemMock = mock(Item.class);
 		List<Item> items = Arrays.asList(itemMock);
 
@@ -86,7 +87,7 @@ public class OrderTableServiceTest {
 
 	@Test
 	public void whenIGetAllItemsFromTableAndTableHasAnOrderWithTwoSameItemMustReturnAListWithOneItem()
-			throws TableDoesNotHaveOrdersException
+			throws TableDoesNotExistException
 	{
 
 		OrderDTO orderDTOMock = mock(OrderDTO.class);
@@ -112,6 +113,7 @@ public class OrderTableServiceTest {
 		when(anotherDTOMock.getOrderedItems()).thenReturn(anotherItems);
 
 		when(orderService.getOrdersByTableID(anyLong())).thenReturn(orders);
+		when(orderTableRepository.findById(anyLong())).thenReturn(Optional.of(mock(OrderTable.class)) );
 
 		List<Item> itemsFromTable = orderTableService.getAllItemsFromTable(1L);
 

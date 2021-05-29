@@ -1,7 +1,7 @@
 package com.unq.edu.tpi.tip.backend.aspects;
 
 import com.unq.edu.tpi.tip.backend.exceptions.OrderEmptyException;
-import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotHaveOrdersException;
+import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotExistException;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,7 @@ public class ExceptionHandlerAspect{
 		{
 			return joinPoint.proceed();
 		}
-		catch (TableDoesNotHaveOrdersException ex)
+		catch (TableDoesNotExistException ex)
 		{
 			throw new ResponseStatusException(HttpStatus.NOT_FOUND, ex.getMessage(), ex);
 		}
