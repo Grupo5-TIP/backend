@@ -1,5 +1,6 @@
 package com.unq.edu.tpi.tip.backend.services;
 
+import com.unq.edu.tpi.tip.backend.exceptions.OrderDoesNotExistException;
 import com.unq.edu.tpi.tip.backend.exceptions.OrderEmptyException;
 import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotExistException;
 import com.unq.edu.tpi.tip.backend.mappers.OrderMapper;
@@ -75,12 +76,18 @@ public class OrderService
 	{
 		List<CustomerOrder> customerOrders = this.orderRepository.findAllByTableId(tableId).orElse(new ArrayList<>());
 
-		customerOrders = customerOrders.stream()
-				.filter((order)-> !order.getIsChecked())
-				.collect(Collectors.toList());
-		for(CustomerOrder order : customerOrders){
+		customerOrders = customerOrders.stream().filter((order) -> !order.getIsChecked()).collect(Collectors.toList());
+		for (CustomerOrder order : customerOrders)
+		{
 			order.check();
 			//this.orderRepository.save(order);
 		}
+	}
+	@Transactional
+	public void deleteOrder(Long orderId) throws OrderDoesNotExistException {
+		CustomerOrder order = orderRepository.findById(orderId).orElseThrow(
+				()-> new OrderDoesNotExistException(orderId));
+
+		orderRepository.delete(order);
 	}
 }

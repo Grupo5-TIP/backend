@@ -1,6 +1,7 @@
 package com.unq.edu.tpi.tip.backend.controllers;
 
 import com.unq.edu.tpi.tip.backend.aspects.ExceptionAspect;
+import com.unq.edu.tpi.tip.backend.exceptions.OrderDoesNotExistException;
 import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotExistException;
 import com.unq.edu.tpi.tip.backend.models.Item;
 import com.unq.edu.tpi.tip.backend.models.dtos.OrderTableDTO;
@@ -35,7 +36,6 @@ public class OrderTableController {
     public ResponseEntity<?> getAllItemsFromTable(@PathVariable("tableId") Long tableId)
             throws TableDoesNotExistException
     {
-
         List<Item> items = orderTableService.getAllItemsFromTable(tableId);
 
         return ResponseEntity.ok(items);
@@ -62,4 +62,10 @@ public class OrderTableController {
     }
 
 
+    @DeleteMapping(path = "/{tableId}")
+    public ResponseEntity<?> deleteAllOrdersFromTable(@PathVariable("tableId") Long tableId)
+            throws TableDoesNotExistException, OrderDoesNotExistException {
+        orderTableService.deleteAllOrdersFromTable(tableId);
+        return ResponseEntity.accepted().build();
+    }
 }

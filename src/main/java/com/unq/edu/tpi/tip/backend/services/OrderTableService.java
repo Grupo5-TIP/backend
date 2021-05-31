@@ -1,7 +1,9 @@
 package com.unq.edu.tpi.tip.backend.services;
 
+import com.unq.edu.tpi.tip.backend.exceptions.OrderDoesNotExistException;
 import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotExistException;
 import com.unq.edu.tpi.tip.backend.mappers.OrderTableMapper;
+import com.unq.edu.tpi.tip.backend.models.CustomerOrder;
 import com.unq.edu.tpi.tip.backend.models.Item;
 import com.unq.edu.tpi.tip.backend.models.OrderTable;
 import com.unq.edu.tpi.tip.backend.models.dtos.OrderDTO;
@@ -48,11 +50,9 @@ public class OrderTableService {
         orders.stream().forEach(order -> {
             order.getOrderedItems().stream().forEach(item -> {
                 int index = items.indexOf(item);
-                if (index == -1)
-                {
+                if (index == -1) {
                     items.add(item);
-                }
-                else {
+                } else {
                     Item tempItem = items.get(index);
                     tempItem.setAmount(tempItem.getAmount() + item.getAmount());
                 }
@@ -62,6 +62,7 @@ public class OrderTableService {
         return items;
     }
 
+
     public void checkBill(Long tableId)
     {
         this.orderService.checkBill(tableId);
@@ -69,10 +70,20 @@ public class OrderTableService {
 
     public void requestBill(Long tableId) throws TableDoesNotExistException
     {
-        OrderTable orderTable = orderTableRepository.findById(tableId).orElseThrow(
-                ()-> new TableDoesNotExistException(tableId));
+        OrderTable orderTable = orderTableRepository.findById(tableId).orElseThrow(() -> new TableDoesNotExistException(tableId));
 
         orderTable.changeToRequestBillState();
         this.orderTableRepository.save(orderTable);
+    }
+
+    public void deleteAllOrdersFromTable(Long tableId) throws TableDoesNotExistException, OrderDoesNotExistException {
+        orderTableRepository.findById(tableId).orElseThrow(
+                ()-> new TableDoesNotExistException(tableId));
+
+        List<OrderDTO> orders = orderService.getOrdersByTableID(tableId);
+        for (OrderDTO order : orders) {
+            orderService.deleteOrder(order.getId());
+        }
+
     }
 }
