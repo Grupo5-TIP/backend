@@ -21,7 +21,7 @@ public class OrderTableController {
     public OrderTableController(OrderTableService orderTableService) {
         this.orderTableService = orderTableService;
     }
-
+    
     @ExceptionAspect
     @GetMapping(path = "", produces = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<?> getAll()
