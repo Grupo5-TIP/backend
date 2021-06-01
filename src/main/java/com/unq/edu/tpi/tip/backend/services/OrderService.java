@@ -54,7 +54,6 @@ public class OrderService
 		if (!customerOrder.hasOrderedItems()){
 			throw new OrderEmptyException();
 		}
-		//TODO validar si la mesa existe o no
 
 		customerOrder = this.orderRepository.save(customerOrder);
 		for(Item item : customerOrder.getOrderedItems()){
@@ -70,5 +69,18 @@ public class OrderService
 	{
 		Iterable<CustomerOrder> customerOrders = this.orderRepository.findAll();
 		return orderMapper.mapEntitiesIntoDTOs(customerOrders);
+	}
+
+	public void checkBill(Long tableId)
+	{
+		List<CustomerOrder> customerOrders = this.orderRepository.findAllByTableId(tableId).orElse(new ArrayList<>());
+
+		customerOrders = customerOrders.stream()
+				.filter((order)-> !order.getIsChecked())
+				.collect(Collectors.toList());
+		for(CustomerOrder order : customerOrders){
+			order.check();
+			//this.orderRepository.save(order);
+		}
 	}
 }

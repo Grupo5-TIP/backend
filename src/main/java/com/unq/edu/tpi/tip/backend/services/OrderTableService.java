@@ -61,4 +61,18 @@ public class OrderTableService {
 
         return items;
     }
+
+    public void checkBill(Long tableId)
+    {
+        this.orderService.checkBill(tableId);
+    }
+
+    public void requestBill(Long tableId) throws TableDoesNotExistException
+    {
+        OrderTable orderTable = orderTableRepository.findById(tableId).orElseThrow(
+                ()-> new TableDoesNotExistException(tableId));
+
+        orderTable.changeToRequestBillState();
+        this.orderTableRepository.save(orderTable);
+    }
 }
