@@ -68,4 +68,5 @@ public class OrderTableController {
         orderTableService.deleteAllOrdersFromTable(tableId);
         return ResponseEntity.accepted().build();
     }
+
 }
