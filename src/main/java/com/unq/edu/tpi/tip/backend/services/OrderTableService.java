@@ -84,6 +84,6 @@ public class OrderTableService {
         for (OrderDTO order : orders) {
             orderService.deleteOrder(order.getId());
         }
-
     }
+
 }

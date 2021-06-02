@@ -61,7 +61,7 @@ public class OrderTableController {
         return ResponseEntity.ok("");
     }
 
-
+    @ExceptionAspect
     @DeleteMapping(path = "/{tableId}")
     public ResponseEntity<?> deleteAllOrdersFromTable(@PathVariable("tableId") Long tableId)
             throws TableDoesNotExistException, OrderDoesNotExistException {
