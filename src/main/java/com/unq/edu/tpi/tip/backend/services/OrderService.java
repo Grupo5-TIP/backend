@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
 public class OrderService
 {
 	private final OrderRepository orderRepository;
@@ -48,15 +47,19 @@ public class OrderService
 		return orderMapper.mapEntitiesIntoDTOs(customerOrders);
 	}
 
-
+	@Transactional
 	public OrderDTO createOrder(OrderDTO orderDTO) throws OrderEmptyException
 	{
 		CustomerOrder customerOrder = orderMapper.mapToPojo(orderDTO);
 		if (!customerOrder.hasOrderedItems()){
 			throw new OrderEmptyException();
 		}
-
-		customerOrder = this.orderRepository.save(customerOrder);
+		try
+		{
+			customerOrder = this.orderRepository.save(customerOrder);
+		}catch (Exception ex){
+			System.out.println("bla");
+		}
 		for(Item item : customerOrder.getOrderedItems()){
 			item.setCustomerOrder(customerOrder);
 		}

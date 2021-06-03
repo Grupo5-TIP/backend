@@ -1,6 +1,7 @@
 package com.unq.edu.tpi.tip.backend.services;
 
 import com.unq.edu.tpi.tip.backend.exceptions.OrderDoesNotExistException;
+import com.unq.edu.tpi.tip.backend.exceptions.OrderEmptyException;
 import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotExistException;
 import com.unq.edu.tpi.tip.backend.mappers.OrderTableMapper;
 import com.unq.edu.tpi.tip.backend.models.CustomerOrder;
@@ -86,4 +87,18 @@ public class OrderTableService {
         }
     }
 
+    public List<Item> updateTableOrder(Long tableId, List<Item> items)
+            throws TableDoesNotExistException, OrderDoesNotExistException, OrderEmptyException
+    {
+        orderTableRepository.findById(tableId).orElseThrow(
+                ()-> new TableDoesNotExistException(tableId));
+
+        this.deleteAllOrdersFromTable(tableId);
+
+        OrderDTO orderDTO= new OrderDTO();
+        orderDTO.setTableId(tableId);
+        orderDTO.setOrderedItems(items);
+        orderService.createOrder(orderDTO);
+        return items;
+    }
 }
