@@ -85,6 +85,9 @@ public class OrderTableService {
         for (OrderDTO order : orders) {
             orderService.deleteOrder(order.getId());
         }
+        OrderTable table = orderTableRepository.findById(tableId).get();
+        table.setAvailableState();
+        orderTableRepository.save(table);
     }
 
     public List<Item> updateTableOrder(Long tableId, List<Item> items)
@@ -96,6 +99,7 @@ public class OrderTableService {
         this.deleteAllOrdersFromTable(tableId);
 
         OrderDTO orderDTO= new OrderDTO();
+        orderDTO.setId(0L);
         orderDTO.setTableId(tableId);
         orderDTO.setOrderedItems(items);
         orderService.createOrder(orderDTO);

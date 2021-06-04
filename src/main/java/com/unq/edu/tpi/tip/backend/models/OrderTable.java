@@ -44,4 +44,12 @@ public class OrderTable
 	{
 		this.state = new RequestBillState();
 	}
+
+	public void setAvailableState() {
+		this.state = new AvailableState();
+	}
+
+	public void setInUsedState() {
+		this.state = new UsedState();
+	}
 }

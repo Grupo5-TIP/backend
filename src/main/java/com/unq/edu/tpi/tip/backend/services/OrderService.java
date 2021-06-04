@@ -6,6 +6,7 @@ import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotExistException;
 import com.unq.edu.tpi.tip.backend.mappers.OrderMapper;
 import com.unq.edu.tpi.tip.backend.models.CustomerOrder;
 import com.unq.edu.tpi.tip.backend.models.Item;
+import com.unq.edu.tpi.tip.backend.models.OrderTable;
 import com.unq.edu.tpi.tip.backend.models.dtos.OrderDTO;
 import com.unq.edu.tpi.tip.backend.repositories.ItemRepository;
 import com.unq.edu.tpi.tip.backend.repositories.OrderRepository;
@@ -54,15 +55,15 @@ public class OrderService
 		if (!customerOrder.hasOrderedItems()){
 			throw new OrderEmptyException();
 		}
-		try
-		{
-			customerOrder = this.orderRepository.save(customerOrder);
-		}catch (Exception ex){
-			System.out.println("bla");
-		}
+		customerOrder = this.orderRepository.save(customerOrder);
+
 		for(Item item : customerOrder.getOrderedItems()){
 			item.setCustomerOrder(customerOrder);
 		}
+
+		OrderTable table = orderTableRepository.findById(orderDTO.getTableId()).get();
+		table.setInUsedState();
+		orderTableRepository.save(table);
 
 		customerOrder = this.orderRepository.save(customerOrder);
 		return orderMapper.mapEntityIntoDTO(customerOrder);
@@ -80,11 +81,12 @@ public class OrderService
 		List<CustomerOrder> customerOrders = this.orderRepository.findAllByTableId(tableId).orElse(new ArrayList<>());
 
 		customerOrders = customerOrders.stream().filter((order) -> !order.getIsChecked()).collect(Collectors.toList());
-		for (CustomerOrder order : customerOrders)
-		{
+		for (CustomerOrder order : customerOrders) {
 			order.check();
-			//this.orderRepository.save(order);
 		}
+		OrderTable table = orderTableRepository.findById(tableId).get();
+		table.setAvailableState();
+		orderTableRepository.save(table);
 	}
 	@Transactional
 	public void deleteOrder(Long orderId) throws OrderDoesNotExistException {
