@@ -126,13 +126,13 @@ public class OrderServiceTest
 		OrderDTO orderMock = mock(OrderDTO.class);
 		CustomerOrder customerOrder = mock(CustomerOrder.class);
 		Item itemMock = mock(Item.class);
-
+		OrderTable orderTable = mock(OrderTable.class);
 		when(orderMapper.mapToPojo(any(OrderDTO.class))).thenReturn(customerOrder);
 
 		when(customerOrder.hasOrderedItems()).thenReturn(true);
 		when(customerOrder.getOrderedItems()).thenReturn(Arrays.asList(itemMock));
 
-
+		when(orderTableRepository.findById(anyLong())).thenReturn(Optional.of(orderTable));
 		when(orderRepository.save(any(CustomerOrder.class))).thenReturn(customerOrder);
 
 		orderService.createOrder(orderMock);
