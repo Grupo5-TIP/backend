@@ -2,7 +2,6 @@ package com.unq.edu.tpi.tip.backend.models;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -19,7 +18,7 @@ public class OrderTable
 	private Long id;
 
 	@Getter
-	@ManyToOne
+	@ManyToOne(cascade = {CascadeType.MERGE})
 	private State state;
 
 	@Getter
@@ -39,5 +38,18 @@ public class OrderTable
 		this.y = y;
 		this.size = size;
 		customerOrder = new ArrayList<>();
+	}
+
+	public void changeToRequestBillState()
+	{
+		this.state = new RequestBillState();
+	}
+
+	public void setAvailableState() {
+		this.state = new AvailableState();
+	}
+
+	public void setInUsedState() {
+		this.state = new UsedState();
 	}
 }

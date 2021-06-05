@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.mockito.Mockito.mock;
 
 public class CustomerOrderTest {
@@ -41,5 +42,11 @@ public class CustomerOrderTest {
 
         assertEquals(order.getId().longValue(), 4L);
         assertEquals(order.getTableId().longValue(), 5L);
+    }
+
+    @Test
+    public void testbasicCreationCustomOrderHasIsCheckedAsFalse(){
+        CustomerOrder customerOrder = new CustomerOrder();
+        assertFalse(customerOrder.getIsChecked());
     }
 }

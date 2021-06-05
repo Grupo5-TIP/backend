@@ -2,6 +2,7 @@ package com.unq.edu.tpi.tip.backend.services;
 
 import com.unq.edu.tpi.tip.backend.mappers.ProductMapper;
 import com.unq.edu.tpi.tip.backend.models.Product;
+import com.unq.edu.tpi.tip.backend.models.dtos.ProductDTO;
 import com.unq.edu.tpi.tip.backend.repositories.ProductRepository;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,10 +11,11 @@ import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.*;
@@ -54,5 +56,30 @@ public class ProductServiceTest {
 		assertEquals(productSaved.getItems(), productMock.getItems());
 	}
 
+
+	@Test
+	public void whenIGetAllProductsAndRepositoryReturnsTwoProductsFromOneCategoryMustReturnAMapWithOneCategoryAndTwoElements(){
+
+		//Product productMock = mock(Product.class);
+		//Product anotherProductMock = mock(Product.class);
+		//Iterable<Product> products = Arrays.asList(productMock, anotherProductMock);
+		when(productRepository.findAll()).thenReturn(new ArrayList<>());
+
+		ProductDTO productDTOMock = mock(ProductDTO.class);
+		ProductDTO anotherProductDTOMock = mock(ProductDTO.class);
+		List<ProductDTO> productDTOS = Arrays.asList(productDTOMock, anotherProductDTOMock);
+		when(productMapper.mapEntitiesIntoDTOs(anyList())).thenReturn(productDTOS);
+		when(productDTOMock.getCategory()).thenReturn("Bebidas");
+		when(anotherProductDTOMock.getCategory()).thenReturn("Bebidas");
+
+		Map<String, List<ProductDTO>> products = productService.getAll();
+
+		assertFalse(products.isEmpty());
+		assertTrue(products.containsKey("Bebidas"));
+		assertEquals(products.get("Bebidas").size(), 2);
+
+		verify(productMapper, times(1)).mapEntitiesIntoDTOs(anyList());
+		verify(productRepository,times(1)).findAll();
+	}
 
 }

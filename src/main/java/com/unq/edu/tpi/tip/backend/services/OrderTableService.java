@@ -1,7 +1,10 @@
 package com.unq.edu.tpi.tip.backend.services;
 
-import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotHaveOrdersException;
+import com.unq.edu.tpi.tip.backend.exceptions.OrderDoesNotExistException;
+import com.unq.edu.tpi.tip.backend.exceptions.OrderEmptyException;
+import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotExistException;
 import com.unq.edu.tpi.tip.backend.mappers.OrderTableMapper;
+import com.unq.edu.tpi.tip.backend.models.CustomerOrder;
 import com.unq.edu.tpi.tip.backend.models.Item;
 import com.unq.edu.tpi.tip.backend.models.OrderTable;
 import com.unq.edu.tpi.tip.backend.models.dtos.OrderDTO;
@@ -36,7 +39,12 @@ public class OrderTableService {
     }
 
     @Transactional(readOnly=true)
-    public List<Item> getAllItemsFromTable(Long tableId) {
+    public List<Item> getAllItemsFromTable(Long tableId) throws TableDoesNotExistException
+    {
+
+        orderTableRepository.findById(tableId).orElseThrow(
+                ()-> new TableDoesNotExistException(tableId));
+
         List<OrderDTO> orders = orderService.getOrdersByTableID(tableId);
         List<Item> items = new ArrayList<>();
 
@@ -52,6 +60,49 @@ public class OrderTableService {
             });
         });
 
+        return items;
+    }
+
+
+    public void checkBill(Long tableId)
+    {
+        this.orderService.checkBill(tableId);
+    }
+
+    public void requestBill(Long tableId) throws TableDoesNotExistException
+    {
+        OrderTable orderTable = orderTableRepository.findById(tableId).orElseThrow(() -> new TableDoesNotExistException(tableId));
+
+        orderTable.changeToRequestBillState();
+        this.orderTableRepository.save(orderTable);
+    }
+
+    public void deleteAllOrdersFromTable(Long tableId) throws TableDoesNotExistException, OrderDoesNotExistException {
+        orderTableRepository.findById(tableId).orElseThrow(
+                ()-> new TableDoesNotExistException(tableId));
+
+        List<OrderDTO> orders = orderService.getOrdersByTableID(tableId);
+        for (OrderDTO order : orders) {
+            orderService.deleteOrder(order.getId());
+        }
+        OrderTable table = orderTableRepository.findById(tableId).get();
+        table.setAvailableState();
+        orderTableRepository.save(table);
+    }
+
+    public List<Item> updateTableOrder(Long tableId, List<Item> items)
+            throws TableDoesNotExistException, OrderDoesNotExistException, OrderEmptyException
+    {
+        orderTableRepository.findById(tableId).orElseThrow(
+                ()-> new TableDoesNotExistException(tableId));
+
+        this.deleteAllOrdersFromTable(tableId);
+
+        OrderDTO orderDTO= new OrderDTO();
+        orderDTO.setId(0L);
+        orderDTO.setTableId(tableId);
+        orderDTO.setOrderedItems(items);
+        orderService.createOrder(orderDTO);
         return items;
     }
 }

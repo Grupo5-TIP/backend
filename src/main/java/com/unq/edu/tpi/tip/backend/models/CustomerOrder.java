@@ -51,4 +51,9 @@ public class CustomerOrder implements Serializable
 	{
 		return ! this.orderedItems.isEmpty();
 	}
+
+	public void check()
+	{
+		this.isChecked = true;
+	}
 }

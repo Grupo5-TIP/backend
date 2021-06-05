@@ -1,6 +1,7 @@
 package com.unq.edu.tpi.tip.backend.services;
 
 
+import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotExistException;
 import com.unq.edu.tpi.tip.backend.mappers.OrderTableMapper;
 import com.unq.edu.tpi.tip.backend.models.Item;
 import com.unq.edu.tpi.tip.backend.models.OrderTable;
@@ -15,6 +16,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyList;
@@ -50,23 +52,23 @@ public class OrderTableServiceTest {
 
 	}
 
-	@Test
-	public void whenIGetAllItemsFromTableAndTableDoesNotHaveOrdersMustReturnAnEmptyItemList()
+	@Test(expected = TableDoesNotExistException.class)
+	public void whenIGetAllItemsFromTableAndTableDoesNotHaveOrdersReturnAnEmptyItemList()
+			throws TableDoesNotExistException
 	{
-		List<Item> items = orderTableService.getAllItemsFromTable(1L);
-		assertNotNull(items);
-		assertTrue(items.isEmpty());
+		orderTableService.getAllItemsFromTable(1L);
 	}
 
 	@Test
-	public void whenIGetAllItemsFromTableAndTableHasAnOrderWithTwoDifferentsItemsMustReturnAListWithTwoItems()
+	public void whenIGetAllItemsFromTableAndTableHasAnOrderWithTwoDifferentItemsMustReturnAListWithTwoItems()
+			throws TableDoesNotExistException
 	{
 		OrderDTO orderDTOMock = mock(OrderDTO.class);
 		OrderDTO anotherDTOMock = mock(OrderDTO.class);
 		List<OrderDTO> orders = Arrays.asList(orderDTOMock, anotherDTOMock);
 
 		when(orderService.getOrdersByTableID(anyLong())).thenReturn(orders);
-
+		when(orderTableRepository.findById(anyLong())).thenReturn(Optional.of(mock(OrderTable.class)) );
 		Item itemMock = mock(Item.class);
 		List<Item> items = Arrays.asList(itemMock);
 
@@ -85,34 +87,39 @@ public class OrderTableServiceTest {
 
 	@Test
 	public void whenIGetAllItemsFromTableAndTableHasAnOrderWithTwoSameItemMustReturnAListWithOneItem()
+			throws TableDoesNotExistException
 	{
 
 		OrderDTO orderDTOMock = mock(OrderDTO.class);
 		OrderDTO anotherDTOMock = mock(OrderDTO.class);
 		List<OrderDTO> orders = Arrays.asList(orderDTOMock, anotherDTOMock);
 
-		when(orderService.getOrdersByTableID(anyLong())).thenReturn(orders);
-
 		Product aProductMock = new Product("Agua tonica", "arrolla la sed", 100.0, "", "Bebidas"); //mock(Product.class);
 
-		Item itemMock = mock(Item.class);
+		Item item = new Item(1, aProductMock);
 		//when(itemMock.getAmount()).thenReturn(1);
 		//when(itemMock.getProduct()).thenReturn(aProductMock);
 
-		List<Item> items = Arrays.asList(itemMock);
+		List<Item> items = Arrays.asList(item);
 
 		when(orderDTOMock.getOrderedItems()).thenReturn(items);
 
-		Item anotherItemMock = mock(Item.class);
-		//when(anotherItemMock.getAmount()).thenReturn(2);
-		//when(anotherItemMock.getProduct()).thenReturn(aProductMock);
-		List<Item> anotherItems = Arrays.asList(anotherItemMock);
+		Item anotherItemk = new Item(2, aProductMock);
+		//when(anotherItemk.getAmount()).thenReturn(2);
+		//when(anotherItemk.getProduct()).thenReturn(aProductMock);
+		//when(anotherItemk.equals(any(Item.class))).thenReturn(eq(true));
+		List<Item> anotherItems = Arrays.asList(anotherItemk);
 
 		when(anotherDTOMock.getOrderedItems()).thenReturn(anotherItems);
+
+		when(orderService.getOrdersByTableID(anyLong())).thenReturn(orders);
+		when(orderTableRepository.findById(anyLong())).thenReturn(Optional.of(mock(OrderTable.class)) );
 
 		List<Item> itemsFromTable = orderTableService.getAllItemsFromTable(1L);
 
 		assertNotNull(itemsFromTable);
-		//assertEquals(itemsFromTable.size(), 1);
+		assertEquals(itemsFromTable.get(0).getProduct(), aProductMock);
+		assertEquals(itemsFromTable.get(0).getAmount(), 3);
+		assertEquals(itemsFromTable.size(), 1);
 	}
 }

@@ -1,12 +1,14 @@
 package com.unq.edu.tpi.tip.backend.services;
 
 import com.unq.edu.tpi.tip.backend.exceptions.OrderEmptyException;
-import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotHaveOrdersException;
+import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotExistException;
 import com.unq.edu.tpi.tip.backend.mappers.OrderMapper;
 import com.unq.edu.tpi.tip.backend.models.CustomerOrder;
 import com.unq.edu.tpi.tip.backend.models.Item;
+import com.unq.edu.tpi.tip.backend.models.OrderTable;
 import com.unq.edu.tpi.tip.backend.models.dtos.OrderDTO;
 import com.unq.edu.tpi.tip.backend.repositories.OrderRepository;
+import com.unq.edu.tpi.tip.backend.repositories.OrderTableRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -37,6 +39,9 @@ public class OrderServiceTest
 	@Mock
 	private OrderMapper orderMapper;
 
+	@Mock
+	private OrderTableRepository orderTableRepository;
+
 	CustomerOrder customerOrderMock;
 	OrderDTO orderDTOMock;
 
@@ -46,21 +51,22 @@ public class OrderServiceTest
 		orderDTOMock = mock(OrderDTO.class);
 	}
 
-	@Test
+	@Test (expected = TableDoesNotExistException.class)
 	public void whenIGetOrdersByTableIDWhichDoesNotExistReturnAnEmptyList()
-			throws TableDoesNotHaveOrdersException{
+			throws TableDoesNotExistException
+	{
 		List<OrderDTO> orderDTOS = orderService.getOrdersByTableID(1l);
-		assertTrue(orderDTOS.isEmpty());
 	}
 
 	@Test
 	public void whenIGetOrdersByTableID1ReturnsAndEmptyOrdersFromThatTable()
-			throws TableDoesNotHaveOrdersException{
+			throws TableDoesNotExistException
+	{
 		List<CustomerOrder> customerOrders = new ArrayList<>();
 		List<OrderDTO> ordersDTO = new ArrayList<>();
 
 		when(orderRepository.findAllByTableId(anyLong())).thenReturn(Optional.of(customerOrders));
-
+		when(orderTableRepository.findById(anyLong())).thenReturn(Optional.of(mock(OrderTable.class)) );
 		List<OrderDTO> orderExpected = orderService.getOrdersByTableID(1l);
 
 		verify(orderRepository, times(1)).findAllByTableId(anyLong());
@@ -69,7 +75,9 @@ public class OrderServiceTest
 
 	@Test
 	public void whenIGetOrdersByTableID1ReturnsTheOrdersFromThatTable()
-			throws TableDoesNotHaveOrdersException{
+			throws TableDoesNotExistException
+	{
+
 
 		when(customerOrderMock.getIsChecked()).thenReturn(false);
 		List<CustomerOrder> customerOrders = Arrays.asList(customerOrderMock);
@@ -77,7 +85,7 @@ public class OrderServiceTest
 
 		when(orderRepository.findAllByTableId(anyLong())).thenReturn(Optional.of(customerOrders));
 		when(orderMapper.mapEntitiesIntoDTOs(customerOrders)).thenReturn(orderExpected);
-
+		when(orderTableRepository.findById(anyLong())).thenReturn(Optional.of(mock(OrderTable.class)) );
 
 		orderExpected = orderService.getOrdersByTableID(1L);
 
@@ -96,11 +104,13 @@ public class OrderServiceTest
 
 	@Test
 	public void whenIGetOrdersByTableID1ReturnsTheOrdersWithOneOrderFromThatTableReturnsAnEmptyListWhenTheOrderIsChecked()
-			throws TableDoesNotHaveOrdersException{
+			throws TableDoesNotExistException
+	{
 		CustomerOrder customerOrderMock = mock(CustomerOrder.class);
 		when(customerOrderMock.getIsChecked()).thenReturn(true);
 		List<CustomerOrder> customerOrders = Arrays.asList(customerOrderMock);
 
+		when(orderTableRepository.findById(anyLong())).thenReturn(Optional.of(mock(OrderTable.class)) );
 		when(orderRepository.findAllByTableId(anyLong())).thenReturn(Optional.of(customerOrders));
 
 		List<OrderDTO> orderExpected = orderService.getOrdersByTableID(1l);
@@ -116,13 +126,13 @@ public class OrderServiceTest
 		OrderDTO orderMock = mock(OrderDTO.class);
 		CustomerOrder customerOrder = mock(CustomerOrder.class);
 		Item itemMock = mock(Item.class);
-
+		OrderTable orderTable = mock(OrderTable.class);
 		when(orderMapper.mapToPojo(any(OrderDTO.class))).thenReturn(customerOrder);
 
 		when(customerOrder.hasOrderedItems()).thenReturn(true);
 		when(customerOrder.getOrderedItems()).thenReturn(Arrays.asList(itemMock));
 
-
+		when(orderTableRepository.findById(anyLong())).thenReturn(Optional.of(orderTable));
 		when(orderRepository.save(any(CustomerOrder.class))).thenReturn(customerOrder);
 
 		orderService.createOrder(orderMock);
