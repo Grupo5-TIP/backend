@@ -43,16 +43,6 @@ public class OrderTableController {
     }
 
     @ExceptionAspect
-    @GetMapping(path = "/check/{tableId}", produces = { MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<?> checkBill(@PathVariable("tableId") Long tableId)
-    {
-
-        orderTableService.checkBill(tableId);
-
-        return ResponseEntity.ok("");
-    }
-
-    @ExceptionAspect
     @GetMapping(path = "/request/{tableId}", produces = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<?> requestBill(@PathVariable("tableId") Long tableId)
             throws TableDoesNotExistException
