@@ -79,16 +79,22 @@ public class InitInServiceDatabase {
 
     private void fireInitialDataOrderTable() throws StateNotFoundException {
         OrderTable orderTable1 = new OrderTable(stateService.findById(1L), 1, 10, 4);
+        orderTable1.setId(1L);
         orderTableService.save(orderTable1);
         OrderTable orderTable2 = new OrderTable(stateService.findById(2L), 450, 10, 2);
+        orderTable2.setId(2L);
         orderTableService.save(orderTable2);
         OrderTable orderTable3 = new OrderTable(stateService.findById(2L), 900, 100, 2);
+        orderTable1.setId(3L);
         orderTableService.save(orderTable3);
         OrderTable orderTable4 = new OrderTable(stateService.findById(1L), 0, 330, 6);
+        orderTable1.setId(4L);
         orderTableService.save(orderTable4);
         OrderTable orderTable5 = new OrderTable(stateService.findById(1L), 450, 330, 4);
+        orderTable1.setId(5L);
         orderTableService.save(orderTable5);
         OrderTable orderTable6 = new OrderTable(stateService.findById(3L), 800, 330, 4);
+        orderTable1.setId(6L);
         orderTableService.save(orderTable6);
     }
 }

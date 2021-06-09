@@ -2,6 +2,7 @@ package com.unq.edu.tpi.tip.backend.models;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -13,8 +14,9 @@ import java.util.List;
 public class OrderTable
 {
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Getter
+	@Setter
 	private Long id;
 
 	@Getter
