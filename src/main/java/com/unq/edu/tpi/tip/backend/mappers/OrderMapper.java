@@ -18,6 +18,14 @@ public class OrderMapper {
         return dtos;
     }
 
+    public List<CustomerOrder> mapDTOSIntoEntities(Iterable<OrderDTO> dtos) {
+        List<CustomerOrder> orders = new ArrayList<>();
+
+        dtos.forEach(e -> orders.add(this.mapToPojo(e)));
+
+        return orders;
+    }
+
     public CustomerOrder mapToPojo(OrderDTO orderDTO)
     {
         CustomerOrder customerOrder = new CustomerOrder();
