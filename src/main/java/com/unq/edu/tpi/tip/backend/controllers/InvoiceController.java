@@ -1,5 +1,6 @@
 package com.unq.edu.tpi.tip.backend.controllers;
 
+import com.mercadopago.exceptions.MPConfException;
 import com.unq.edu.tpi.tip.backend.aspects.ExceptionAspect;
 import com.unq.edu.tpi.tip.backend.exceptions.InvoiceDoesNotHaveOrdersException;
 import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotExistException;
@@ -9,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+// SDK de Mercado Pago
+import com.mercadopago.MercadoPago;
 
 @RestController
 @RequestMapping("/api/invoices")
@@ -16,9 +19,11 @@ import org.springframework.web.bind.annotation.*;
 public class InvoiceController {
 
     private final InvoiceService invoiceService;
+    // Agrega credenciales
 
-    public InvoiceController(InvoiceService invoiceService){
+    public InvoiceController(InvoiceService invoiceService) throws MPConfException {
         this.invoiceService = invoiceService;
+        MercadoPago.SDK.setAccessToken("PROD_ACCESS_TOKEN");
     }
 
     @ExceptionAspect

@@ -50,6 +50,12 @@
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
 		</dependency>
+
+		<dependency>
+			<groupId>com.mercadopago</groupId>
+			<artifactId>sdk-java</artifactId>
+			<version> 1.8.0 </version>
+		</dependency>
 	</dependencies>
 
 	<build>
