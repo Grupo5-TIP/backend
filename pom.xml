@@ -64,6 +64,24 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.2</version>
+				<configuration>
+					<includes>
+						<include>com/unq/edu/tpi/tip/**/*.*</include>
+					</includes>
+					<excludes>
+						<exclude>com/unq/edu/tpi/tip/backend/exceptions/**/*</exclude>
+						<exclude>com/unq/edu/tpi/tip/backend/config/**/*</exclude>
+						<exclude>com/unq/edu/tpi/tip/backend/mappers/**/*</exclude>
+						<exclude>com/unq/edu/tpi/tip/backend/BackendApplication.class</exclude>
+						<exclude>com/unq/edu/tpi/tip/backend/ServletInitializer.class</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 

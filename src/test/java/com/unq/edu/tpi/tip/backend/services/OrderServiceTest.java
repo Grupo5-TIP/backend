@@ -1,5 +1,6 @@
 package com.unq.edu.tpi.tip.backend.services;
 
+import com.unq.edu.tpi.tip.backend.exceptions.OrderDoesNotExistException;
 import com.unq.edu.tpi.tip.backend.exceptions.OrderEmptyException;
 import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotExistException;
 import com.unq.edu.tpi.tip.backend.mappers.OrderMapper;
@@ -78,7 +79,6 @@ public class OrderServiceTest
 			throws TableDoesNotExistException
 	{
 
-
 		when(customerOrderMock.getIsChecked()).thenReturn(false);
 		List<CustomerOrder> customerOrders = Arrays.asList(customerOrderMock);
 		List<OrderDTO> orderExpected = Arrays.asList(orderDTOMock);
@@ -106,7 +106,6 @@ public class OrderServiceTest
 	public void whenIGetOrdersByTableID1ReturnsTheOrdersWithOneOrderFromThatTableReturnsAnEmptyListWhenTheOrderIsChecked()
 			throws TableDoesNotExistException
 	{
-		CustomerOrder customerOrderMock = mock(CustomerOrder.class);
 		when(customerOrderMock.getIsChecked()).thenReturn(true);
 		List<CustomerOrder> customerOrders = Arrays.asList(customerOrderMock);
 
@@ -123,23 +122,21 @@ public class OrderServiceTest
 	@Test
 	public void whenICreateAnOrderWithOrderedItemsMustSaveTwiceIntoDatabase() throws OrderEmptyException
 	{
-		OrderDTO orderMock = mock(OrderDTO.class);
-		CustomerOrder customerOrder = mock(CustomerOrder.class);
 		Item itemMock = mock(Item.class);
 		OrderTable orderTable = mock(OrderTable.class);
-		when(orderMapper.mapToPojo(any(OrderDTO.class))).thenReturn(customerOrder);
+		when(orderMapper.mapToPojo(any(OrderDTO.class))).thenReturn(customerOrderMock);
 
-		when(customerOrder.hasOrderedItems()).thenReturn(true);
-		when(customerOrder.getOrderedItems()).thenReturn(Arrays.asList(itemMock));
+		when(customerOrderMock.hasOrderedItems()).thenReturn(true);
+		when(customerOrderMock.getOrderedItems()).thenReturn(Arrays.asList(itemMock));
 
 		when(orderTableRepository.findById(anyLong())).thenReturn(Optional.of(orderTable));
-		when(orderRepository.save(any(CustomerOrder.class))).thenReturn(customerOrder);
+		when(orderRepository.save(any(CustomerOrder.class))).thenReturn(customerOrderMock);
 
-		orderService.createOrder(orderMock);
+		orderService.createOrder(orderDTOMock);
 
 		verify(orderRepository, times(2)).save(any(CustomerOrder.class));
-		verify(itemMock, times(1)).setCustomerOrder(customerOrder);
-		verify(orderMapper, times(1)).mapEntityIntoDTO(customerOrder);
+		verify(itemMock, times(1)).setCustomerOrder(customerOrderMock);
+		verify(orderMapper, times(1)).mapEntityIntoDTO(customerOrderMock);
 	}
 
 	@Test
@@ -154,5 +151,37 @@ public class OrderServiceTest
 		verify(orderMapper, times(1)).mapEntitiesIntoDTOs(customerOrders);
 	}
 
+	@Test
+	public void checkBillTest(){
+		List<CustomerOrder> customerOrders = Arrays.asList(customerOrderMock);
+		when(orderRepository.findAllByTableId(anyLong())).thenReturn(Optional.of(customerOrders));
+
+		OrderTable table = mock(OrderTable.class);
+		when(orderTableRepository.findById(anyLong())).thenReturn(Optional.of(table));
+
+		orderService.checkBill(anyLong());
+
+		verify(orderRepository, times(1)).findAllByTableId(anyLong());
+		verify(table, times(1)).setAvailableState();
+		verify(customerOrderMock, times(1)).check();
+
+	}
+
+	@Test
+	public void deleteOrderWhenTableIdExist() throws OrderDoesNotExistException
+	{
+		when(orderRepository.findById(anyLong())).thenReturn(Optional.of(customerOrderMock));
+		orderService.deleteOrder(anyLong());
+		verify(orderRepository, times(1)).findById(anyLong());
+	}
+
+	@Test(expected = OrderDoesNotExistException.class)
+	public void deleteOrderWhenTableIdExistRaiseOrderDoesNotExistException() throws OrderDoesNotExistException
+	{
+		when(orderRepository.findById(anyLong())).thenReturn(Optional.ofNullable(null));
+
+		orderService.deleteOrder(anyLong());
+		verify(orderRepository, times(1)).findById(anyLong());
+	}
 
 }

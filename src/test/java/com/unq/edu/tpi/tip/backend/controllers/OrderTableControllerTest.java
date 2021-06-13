@@ -19,11 +19,12 @@ import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(MockitoJUnitRunner.class)
@@ -72,6 +73,48 @@ public class OrderTableControllerTest  extends TemplateControllerTest{
 		Object object = mapper.readValue(response.getBytes(), List.class);
 		assertTrue(object instanceof List);
 		assertEquals(((List<?>) object).size(), 0);
+	}
+
+	@Test
+	public void requestBill() throws Exception
+	{
+		MvcResult result = mockMvc.perform(get("/api/tables/request/1"))
+				.andExpect(status().isOk())
+				.andReturn();
+
+		String response = result.getResponse().getContentAsString();
+		assertNotNull(response);
+		verify(orderTableService, times(1)).requestBill(anyLong());
+	}
+
+	@Test
+	public void deleteAllOrdersFromTable() throws Exception
+	{
+		MvcResult result = mockMvc.perform(delete("/api/tables/1"))
+				.andExpect(status().isOk())
+				.andReturn();
+
+		String response = result.getResponse().getContentAsString();
+		assertNotNull(response);
+		verify(orderTableService, times(1)).deleteAllOrdersFromTable(anyLong());
+	}
+
+	@Test
+	public void updateTableOrder() throws Exception
+	{
+		Item item = new Item();
+		List<Item> items = Arrays.asList(item);
+
+		MvcResult result = mockMvc.perform(put("/api/tables/1")
+					.contentType(MediaType.APPLICATION_JSON)
+					.content(asJsonString(items))
+					)
+				.andExpect(status().isOk())
+				.andReturn();
+
+		String response = result.getResponse().getContentAsString();
+		assertNotNull(response);
+		verify(orderTableService, times(1)).updateTableOrder(anyLong(), anyList());
 	}
 
 }

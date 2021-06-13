@@ -1,6 +1,8 @@
 package com.unq.edu.tpi.tip.backend.services;
 
 
+import com.unq.edu.tpi.tip.backend.exceptions.OrderDoesNotExistException;
+import com.unq.edu.tpi.tip.backend.exceptions.OrderEmptyException;
 import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotExistException;
 import com.unq.edu.tpi.tip.backend.mappers.OrderTableMapper;
 import com.unq.edu.tpi.tip.backend.models.Item;
@@ -8,12 +10,14 @@ import com.unq.edu.tpi.tip.backend.models.OrderTable;
 import com.unq.edu.tpi.tip.backend.models.Product;
 import com.unq.edu.tpi.tip.backend.models.dtos.OrderDTO;
 import com.unq.edu.tpi.tip.backend.repositories.OrderTableRepository;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -35,6 +39,20 @@ public class OrderTableServiceTest {
 	@Mock
 	private OrderService orderService;
 
+	@Mock
+	OrderTable orderTableMock;
+	@Mock
+	OrderDTO orderDTOMock;
+	@Mock
+	OrderDTO anotherDTOMock;
+
+	List<OrderDTO> orders;
+
+	@Before
+	public void setUp(){
+		orders = Arrays.asList(orderDTOMock, anotherDTOMock);
+	}
+
 	@Test
 	public void whenIGetAllProductsMustInteractOneTimeWithMapperAndRepository(){
 		orderTableService.getAll();
@@ -44,10 +62,7 @@ public class OrderTableServiceTest {
 
 	@Test
 	public void whenICreateAProductMustHasTheSameParamValuesAndMustInteractOneTimeWithMapperAndRepository(){
-		OrderTable orderTable = mock(OrderTable.class);
-
-		orderTableService.save(orderTable);
-
+		orderTableService.save(orderTableMock);
 		verify(orderTableRepository,times(1)).save(any(OrderTable.class));
 
 	}
@@ -63,9 +78,6 @@ public class OrderTableServiceTest {
 	public void whenIGetAllItemsFromTableAndTableHasAnOrderWithTwoDifferentItemsMustReturnAListWithTwoItems()
 			throws TableDoesNotExistException
 	{
-		OrderDTO orderDTOMock = mock(OrderDTO.class);
-		OrderDTO anotherDTOMock = mock(OrderDTO.class);
-		List<OrderDTO> orders = Arrays.asList(orderDTOMock, anotherDTOMock);
 
 		when(orderService.getOrdersByTableID(anyLong())).thenReturn(orders);
 		when(orderTableRepository.findById(anyLong())).thenReturn(Optional.of(mock(OrderTable.class)) );
@@ -89,10 +101,6 @@ public class OrderTableServiceTest {
 	public void whenIGetAllItemsFromTableAndTableHasAnOrderWithTwoSameItemMustReturnAListWithOneItem()
 			throws TableDoesNotExistException
 	{
-
-		OrderDTO orderDTOMock = mock(OrderDTO.class);
-		OrderDTO anotherDTOMock = mock(OrderDTO.class);
-		List<OrderDTO> orders = Arrays.asList(orderDTOMock, anotherDTOMock);
 
 		Product aProductMock = new Product("Agua tonica", "arrolla la sed", 100.0, "", "Bebidas"); //mock(Product.class);
 
@@ -121,5 +129,73 @@ public class OrderTableServiceTest {
 		assertEquals(itemsFromTable.get(0).getProduct(), aProductMock);
 		assertEquals(itemsFromTable.get(0).getAmount(), 3);
 		assertEquals(itemsFromTable.size(), 1);
+	}
+
+	@Test
+	public void testRequestBill() throws TableDoesNotExistException
+	{
+		when(orderTableRepository.findById(anyLong())).thenReturn(Optional.of(orderTableMock));
+
+		orderTableService.requestBill(anyLong());
+		verify(orderTableRepository, times(1)).save(orderTableMock);
+		verify(orderTableMock, times(1)).changeToRequestBillState();
+	}
+
+	@Test(expected = TableDoesNotExistException.class)
+	public void testRequestBillRaiseTableDoesNotExistExceptionWhenTableDoesNotExist() throws TableDoesNotExistException
+	{
+		when(orderTableRepository.findById(anyLong())).thenReturn(Optional.ofNullable(null));
+
+		orderTableService.requestBill(anyLong());
+		verify(orderTableRepository, times(1)).save(orderTableMock);
+		verify(orderTableRepository, times(1)).findById(anyLong());
+
+	}
+
+	@Test(expected = TableDoesNotExistException.class)
+	public void testDeleteAllOrdersFromTableRaiseTableDoesNotExistExceptionWhenTableDoesNotExist()
+			throws TableDoesNotExistException, OrderDoesNotExistException
+	{
+		when(orderTableRepository.findById(anyLong())).thenReturn(Optional.ofNullable(null));
+		orderTableService.deleteAllOrdersFromTable(anyLong());
+		verify(orderTableRepository, times(1)).findById(anyLong());
+	}
+
+	@Test
+	public void testDeleteAllOrders()
+			throws TableDoesNotExistException, OrderDoesNotExistException
+	{
+		when(orderTableRepository.findById(anyLong())).thenReturn(Optional.ofNullable(null));
+		when(orderService.getOrdersByTableID(anyLong())).thenReturn(orders);
+		when(orderTableRepository.findById(anyLong())).thenReturn(Optional.of(orderTableMock));
+
+		orderTableService.deleteAllOrdersFromTable(anyLong());
+
+		verify(orderTableRepository, times(2)).findById(anyLong());
+		verify(orderService, times(1)).getOrdersByTableID(anyLong());
+		verify(orderService, atLeastOnce()).deleteOrder(anyLong());
+		verify(orderTableMock, times(1)).setAvailableState();
+		verify(orderTableRepository, times(1)).save(orderTableMock);
+	}
+
+	@Test(expected = TableDoesNotExistException.class)
+	public void updateTableOrderTableDoesNotExistExceptionWhenTableDoesNotExist()
+			throws OrderEmptyException, TableDoesNotExistException, OrderDoesNotExistException
+	{
+		when(orderTableRepository.findById(anyLong())).thenReturn(Optional.ofNullable(null));
+
+		orderTableService.updateTableOrder(1l, new ArrayList<>());
+		verify(orderTableRepository, times(1)).findById(anyLong());
+	}
+
+	@Test
+	public void updateTableOrderTable()
+			throws OrderEmptyException, TableDoesNotExistException, OrderDoesNotExistException
+	{
+		when(orderTableRepository.findById(anyLong())).thenReturn(Optional.ofNullable(orderTableMock));
+
+		orderTableService.updateTableOrder(1l, new ArrayList<>());
+		verify(orderTableRepository, atLeastOnce()).findById(anyLong());
+		verify(orderService, times(1)).createOrder(any(OrderDTO.class));
 	}
 }
