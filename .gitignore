@@ -27,3 +27,6 @@ hs_err_pid*
 .mvn/
 *.iml
 target/
+
+# config file
+src/main/resources/config.properties
