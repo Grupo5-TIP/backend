@@ -25,15 +25,15 @@ public class MercadoPagoService {
         Preference preference = new Preference();
 
         /* TARJETAS PRUEBAS
-        Tarjeta	            Número	                Código de seguridad	    Fecha de vencimiento
-        Mastercard	        5031 7557 3453 0604	    123	                    11/25
-        Visa	            4509 9535 6623 3704	    123	                    11/25
-        American Express	3711 803032 57522	    1234	                11/25
+        Status      Tarjeta	            Número	                Código de seguridad	    Fecha de vencimiento
+        Success     Mastercard	        5031 7557 3453 0604	    123	                    11/25
+        Failure     Mastercard	        5182 4320 0439 0716	    347	                    04/23
+        Success     American Express	3711 803032 57522	    1234	                11/25
          */
         preference.setBackUrls(
-                new BackUrls().setFailure("http://localhost:3000/checkout/"+tableId)
+                new BackUrls().setFailure("http://localhost:3000/checkout/error/"+tableId)
                     .setPending("http://localhost:3000/checkout/"+tableId)
-                    .setSuccess("http://localhost:3000/checkout/"+tableId));
+                    .setSuccess("http://localhost:3000/checkout/success/"+tableId));
 
         Item item = new Item();
         item.setTitle("Consumo Restaurant")
