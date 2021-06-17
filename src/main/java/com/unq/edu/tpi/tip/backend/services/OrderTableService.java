@@ -99,4 +99,13 @@ public class OrderTableService {
         orderService.createOrder(orderDTO);
         return items;
     }
+
+    public void changeStateToMercadoPago(Long tableId) throws TableDoesNotExistException {
+        orderTableRepository.findById(tableId).orElseThrow(
+                ()-> new TableDoesNotExistException(tableId));
+
+        OrderTable table = orderTableRepository.findById(tableId).get();
+        table.setMercadoPagoState();
+        orderTableRepository.save(table);
+    }
 }
