@@ -51,7 +51,7 @@ public class OrderTable
 		this.state = new AvailableState();
 	}
 
-	public void setInUsedState() {
-		this.state = new UsedState();
-	}
+	public void setInUsedState() { this.state = new UsedState(); }
+
+	public void setMercadoPagoState() { this.state = new MercadoPagoState(); }
 }

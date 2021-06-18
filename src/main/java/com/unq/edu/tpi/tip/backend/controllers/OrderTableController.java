@@ -70,4 +70,13 @@ public class OrderTableController {
         return ResponseEntity.ok(itemUpdated);
     }
 
+    @PutMapping(path = "/{tableId}", produces = {
+            MediaType.APPLICATION_JSON_VALUE }, consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> changeStateToMercadoPago(@PathVariable("tableId") Long tableId)
+            throws TableDoesNotExistException
+    {
+        orderTableService.changeStateToMercadoPago(tableId);
+        return ResponseEntity.ok().build();
+    }
+
 }
