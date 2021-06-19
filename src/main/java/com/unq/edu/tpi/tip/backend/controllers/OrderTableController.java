@@ -70,7 +70,8 @@ public class OrderTableController {
         return ResponseEntity.ok(itemUpdated);
     }
 
-    @PutMapping(path = "/{tableId}", produces = {
+    @ExceptionAspect
+    @PutMapping(path = "/{tableId}/mpstate", produces = {
             MediaType.APPLICATION_JSON_VALUE }, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> changeStateToMercadoPago(@PathVariable("tableId") Long tableId)
             throws TableDoesNotExistException
