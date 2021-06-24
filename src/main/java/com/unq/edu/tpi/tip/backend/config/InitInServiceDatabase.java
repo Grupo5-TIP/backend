@@ -75,6 +75,10 @@ public class InitInServiceDatabase {
         RequestBillState billing = new RequestBillState();
         available.setId(3L);
         stateService.save(billing);
+
+        MercadoPagoState mercadoPagoState = new MercadoPagoState();
+        available.setId(4L);
+        stateService.save(mercadoPagoState);
     }
 
     private void fireInitialDataOrderTable() throws StateNotFoundException {

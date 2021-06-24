@@ -64,7 +64,7 @@ public class OrderTableControllerTest  extends TemplateControllerTest{
 	{
 		when(orderTableService.getAllItemsFromTable(1L)).thenReturn(new ArrayList<>());
 
-		MvcResult result = mockMvc.perform(get("/api/tables/1"))
+		MvcResult result = mockMvc.perform(get("/api/tables/items/1"))
 				.andExpect(status().isOk())
 				.andReturn();
 

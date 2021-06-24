@@ -4,7 +4,6 @@ import com.unq.edu.tpi.tip.backend.exceptions.OrderDoesNotExistException;
 import com.unq.edu.tpi.tip.backend.exceptions.OrderEmptyException;
 import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotExistException;
 import com.unq.edu.tpi.tip.backend.mappers.OrderTableMapper;
-import com.unq.edu.tpi.tip.backend.models.CustomerOrder;
 import com.unq.edu.tpi.tip.backend.models.Item;
 import com.unq.edu.tpi.tip.backend.models.OrderTable;
 import com.unq.edu.tpi.tip.backend.models.dtos.OrderDTO;
@@ -107,5 +106,12 @@ public class OrderTableService {
         OrderTable table = orderTableRepository.findById(tableId).get();
         table.setMercadoPagoState();
         orderTableRepository.save(table);
+    }
+
+    public OrderTableDTO getTableById(Long tableId) throws TableDoesNotExistException {
+        OrderTable orderTable = orderTableRepository.findById(tableId).orElseThrow(
+                ()-> new TableDoesNotExistException(tableId));
+
+        return orderTableMapper.mapEntityIntoDTO(orderTable);
     }
 }
