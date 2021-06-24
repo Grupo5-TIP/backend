@@ -198,4 +198,26 @@ public class OrderTableServiceTest {
 		verify(orderTableRepository, atLeastOnce()).findById(anyLong());
 		verify(orderService, times(1)).createOrder(any(OrderDTO.class));
 	}
+
+	//@Test (expected = TableDoesNotExistException.class)
+	public void changeStateToMercadoPagoRaiseTableDoesNotExistException() throws TableDoesNotExistException {
+		//orderTableRepository.findById(1l).orElseThrow(
+		//		()-> new TableDoesNotExistException(1l));
+
+
+		//when(orderTableRepository.findById(1l)).thenReturn(Optional.of(null));
+		when(orderTableRepository.findById(1l)).thenThrow(new TableDoesNotExistException(1l));
+		orderTableService.changeStateToMercadoPago(1l);
+
+		//verify(orderTableRepository)
+	}
+
+	@Test
+	public void changeStateToMercadoPago() throws TableDoesNotExistException {
+		when(orderTableRepository.findById(1l)).thenReturn(Optional.of(orderTableMock));
+		orderTableService.changeStateToMercadoPago(1l);
+
+		verify(orderTableRepository, times(2)).findById(1l);
+		verify(orderTableRepository, times(1)).save(orderTableMock);
+	}
 }

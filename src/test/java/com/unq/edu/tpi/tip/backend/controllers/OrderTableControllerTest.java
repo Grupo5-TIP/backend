@@ -1,11 +1,6 @@
 package com.unq.edu.tpi.tip.backend.controllers;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.unq.edu.tpi.tip.backend.models.CustomerOrder;
 import com.unq.edu.tpi.tip.backend.models.Item;
-import com.unq.edu.tpi.tip.backend.models.dtos.OrderDTO;
 import com.unq.edu.tpi.tip.backend.services.OrderTableService;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,7 +9,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.http.MediaType;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
@@ -106,15 +100,29 @@ public class OrderTableControllerTest  extends TemplateControllerTest{
 		List<Item> items = Arrays.asList(item);
 
 		MvcResult result = mockMvc.perform(put("/api/tables/1")
-					.contentType(MediaType.APPLICATION_JSON)
-					.content(asJsonString(items))
-					)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(asJsonString(items))
+		)
 				.andExpect(status().isOk())
 				.andReturn();
 
 		String response = result.getResponse().getContentAsString();
 		assertNotNull(response);
 		verify(orderTableService, times(1)).updateTableOrder(anyLong(), anyList());
+	}
+
+	@Test
+	public void changeStateToMercadoPago() throws Exception
+	{
+
+		MvcResult result = mockMvc.perform(put("/api/tables/1/mpstate")
+				.contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andReturn();
+
+		String response = result.getResponse().getContentAsString();
+		assertNotNull(response);
+		verify(orderTableService, times(1)).changeStateToMercadoPago(anyLong());
 	}
 
 }

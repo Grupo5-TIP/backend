@@ -6,8 +6,7 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 
 public class CustomerOrderTest {
@@ -48,5 +47,13 @@ public class CustomerOrderTest {
     public void testbasicCreationCustomOrderHasIsCheckedAsFalse(){
         CustomerOrder customerOrder = new CustomerOrder();
         assertFalse(customerOrder.getIsChecked());
+    }
+
+    @Test
+    public void testBillIsChecked(){
+        CustomerOrder customerOrder = new CustomerOrder();
+        assertFalse(customerOrder.getIsChecked());
+        customerOrder.check();
+        assertTrue(customerOrder.getIsChecked());
     }
 }

@@ -1,9 +1,11 @@
 package com.unq.edu.tpi.tip.backend.services;
 
 import com.unq.edu.tpi.tip.backend.exceptions.UserDoesNotExistException;
+import com.unq.edu.tpi.tip.backend.exceptions.UserMustHaveValuesException;
 import com.unq.edu.tpi.tip.backend.models.User;
 import com.unq.edu.tpi.tip.backend.models.dtos.LoginDTO;
 import com.unq.edu.tpi.tip.backend.repositories.UserRepository;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,11 +21,15 @@ public class AuthService
 		this.userRepository = userRepository;
 	}
 
-	public LoginDTO loginWithPassword(String username, String password) throws UserDoesNotExistException
+	public LoginDTO loginWithPassword(String username, String password)
+			throws UserDoesNotExistException, UserMustHaveValuesException
 	{
+		if (StringUtils.isBlank(username) || StringUtils.isBlank(password)){
+			throw new UserMustHaveValuesException();
+		}
 		String passwordEncoded = Base64.getEncoder().encodeToString(password.getBytes());
 
-		User user = this.userRepository.findByUsernameAndPassword(username, passwordEncoded)
+		User user = userRepository.findByUsernameAndPassword(username, passwordEncoded)
 				.orElseThrow(UserDoesNotExistException::new);
 
 		LoginDTO loginDTO = new LoginDTO();

@@ -44,8 +44,8 @@ public class InitInServiceDatabase {
 
     private void fireInitialDataUsers()
     {
-        User mozo = new User("admin", "MXEydzNlNHI=", true);
-        userRepository.save(mozo);
+        User admin = new User("admin", "MXEydzNlNHI=", true);
+        userRepository.save(admin);
 
         User cajero = new User("cajero", "MXEydzNlNHI=", false);
         userRepository.save(cajero);

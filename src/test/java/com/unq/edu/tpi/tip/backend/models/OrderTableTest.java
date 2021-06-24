@@ -6,7 +6,8 @@ import org.junit.jupiter.api.Test;
 import java.util.ArrayList;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.mock;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.*;
 
 public class OrderTableTest {
 
@@ -40,5 +41,29 @@ public class OrderTableTest {
         assertEquals(orderTable.getX(), null);
         assertEquals(orderTable.getY(), null);
         assertEquals(orderTable.getState(), null);
+    }
+
+    @Test
+    public void verifyAnOrderTableChangeToRequestBillState() {
+        orderTable = new OrderTable();
+        orderTable.changeToRequestBillState();
+
+        assertEquals(orderTable.getState().getState(), "bill");
+    }
+
+    @Test
+    public void verifyAnOrderTableChangeToAvailableState() {
+        orderTable = new OrderTable();
+        orderTable.setAvailableState();
+
+        assertEquals(orderTable.getState().getState(), "empty");
+    }
+
+    @Test
+    public void verifyAnOrderTableChangeToMercadoPagoState() {
+        orderTable = new OrderTable();
+        orderTable.setMercadoPagoState();
+
+        assertEquals(orderTable.getState().getState(), "mercadoPago");
     }
 }
