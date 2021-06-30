@@ -3,6 +3,7 @@ package com.unq.edu.tpi.tip.backend.config;
 
 import com.unq.edu.tpi.tip.backend.exceptions.StateNotFoundException;
 import com.unq.edu.tpi.tip.backend.models.*;
+import com.unq.edu.tpi.tip.backend.repositories.UserRepository;
 import com.unq.edu.tpi.tip.backend.services.OrderTableService;
 import com.unq.edu.tpi.tip.backend.services.ProductService;
 import com.unq.edu.tpi.tip.backend.services.StateService;
@@ -22,10 +23,13 @@ public class InitInServiceDatabase {
 
     private final StateService stateService;
 
-    public InitInServiceDatabase(OrderTableService orderTableService,ProductService productService, StateService stateService){
+    private final UserRepository userRepository;
+
+    public InitInServiceDatabase(OrderTableService orderTableService,ProductService productService, StateService stateService, UserRepository userRepository){
         this.orderTableService = orderTableService;
         this.productService = productService;
         this.stateService = stateService;
+        this.userRepository = userRepository;
     }
 
     @PostConstruct
@@ -34,7 +38,18 @@ public class InitInServiceDatabase {
             fireInitialDataProducts();
             fireInitialDataStates();
             fireInitialDataOrderTable();
+            fireInitialDataUsers();
         }
+    }
+
+    private void fireInitialDataUsers()
+    {
+        User admin = new User("admin", "MXEydzNlNHI=", true);
+        userRepository.save(admin);
+
+        User cajero = new User("cajero", "MXEydzNlNHI=", false);
+        userRepository.save(cajero);
+
     }
 
     private void fireInitialDataProducts() throws Exception {
