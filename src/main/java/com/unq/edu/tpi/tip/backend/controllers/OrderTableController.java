@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.xml.ws.Response;
 import java.util.List;
 
 @RestController
@@ -34,6 +35,13 @@ public class OrderTableController {
 
     @ExceptionAspect
     @GetMapping(path = "/{tableId}", produces = { MediaType.APPLICATION_JSON_VALUE })
+    public ResponseEntity<?> getTableById(@PathVariable("tableId") Long tableId)
+            throws TableDoesNotExistException {
+        return ResponseEntity.ok(orderTableService.getTableById(tableId));
+    }
+
+    @ExceptionAspect
+    @GetMapping(path = "/items/{tableId}", produces = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<?> getAllItemsFromTable(@PathVariable("tableId") Long tableId)
             throws TableDoesNotExistException
     {
@@ -72,7 +80,7 @@ public class OrderTableController {
 
     @ExceptionAspect
     @PutMapping(path = "/{tableId}/mpstate", produces = {
-            MediaType.APPLICATION_JSON_VALUE }, consumes = MediaType.APPLICATION_JSON_VALUE)
+            MediaType.APPLICATION_JSON_VALUE })
     public ResponseEntity<?> changeStateToMercadoPago(@PathVariable("tableId") Long tableId)
             throws TableDoesNotExistException
     {
