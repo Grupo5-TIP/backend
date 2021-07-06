@@ -1,5 +1,6 @@
 package com.unq.edu.tpi.tip.backend.mappers;
 
+import com.unq.edu.tpi.tip.backend.models.CustomerOrder;
 import com.unq.edu.tpi.tip.backend.models.Product;
 import com.unq.edu.tpi.tip.backend.models.dtos.ProductDTO;
 import lombok.NoArgsConstructor;
@@ -29,6 +30,24 @@ public class ProductMapper
 		productDTO.setImage(product.getImage());
 		productDTO.setCategory(product.getCategory());
 		return productDTO;
+	}
+
+	public Product mapToPojo(ProductDTO productDTO){
+		Product product = new Product();
+		product.setName(productDTO.getName());
+		product.setDescription(productDTO.getDescription());
+		product.setCategory(productDTO.getCategory());
+		product.setPrice(productDTO.getPrice());
+
+		return product;
+	}
+
+	public List<Product> mapToPojos(List<ProductDTO> products){
+		List<Product> tempProducts = new ArrayList<>();
+
+		products.forEach(e -> tempProducts.add(this.mapToPojo(e)));
+
+		return tempProducts;
 	}
 
 }

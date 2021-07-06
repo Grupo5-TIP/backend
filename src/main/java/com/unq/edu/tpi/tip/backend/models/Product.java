@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.lang.Nullable;
 
 import javax.persistence.*;
@@ -26,14 +27,19 @@ public class Product implements Serializable{
 	private Long id;
 
 	@Getter
+	@Setter
 	private String name;
 	@Getter
+	@Setter
 	private String description;
 	@Getter
+	@Setter
 	private Double price;
 	@Getter
+	@Setter
 	private String image;
 	@Getter
+	@Setter
 	private String category;
 
 	@Nullable

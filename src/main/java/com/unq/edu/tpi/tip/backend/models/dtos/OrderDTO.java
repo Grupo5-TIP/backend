@@ -14,4 +14,9 @@ public class OrderDTO {
     private Long id;
     private Long tableId;
     private List<Item> orderedItems;
+
+    public OrderDTO(Long tableId, List<Item> items){
+        this.tableId = tableId;
+        this.orderedItems = items;
+    }
 }
