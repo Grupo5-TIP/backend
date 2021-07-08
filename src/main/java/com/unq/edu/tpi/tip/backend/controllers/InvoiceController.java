@@ -11,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.ParseException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -38,7 +39,8 @@ public class InvoiceController {
     @ExceptionAspect
     @GetMapping(produces = {
             MediaType.APPLICATION_JSON_VALUE })
-    public ResponseEntity<?> getInvoicesByMonth() {
+    public ResponseEntity<?> getInvoicesByMonth() throws ParseException
+    {
         List<InvoiceByMonthDTO> createdInvoice = invoiceService.getInvoicesByMonth();
         return new ResponseEntity<List<InvoiceByMonthDTO>>(createdInvoice, HttpStatus.CREATED);
     }

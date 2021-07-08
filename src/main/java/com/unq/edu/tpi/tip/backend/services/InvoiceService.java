@@ -1,26 +1,22 @@
 package com.unq.edu.tpi.tip.backend.services;
 
 import com.unq.edu.tpi.tip.backend.exceptions.InvoiceDoesNotHaveOrdersException;
-import com.unq.edu.tpi.tip.backend.exceptions.OrderEmptyException;
 import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotExistException;
 import com.unq.edu.tpi.tip.backend.mappers.InvoiceMapper;
 import com.unq.edu.tpi.tip.backend.mappers.OrderMapper;
-import com.unq.edu.tpi.tip.backend.mappers.OrderTableMapper;
 import com.unq.edu.tpi.tip.backend.models.Invoice;
-import com.unq.edu.tpi.tip.backend.models.Item;
 import com.unq.edu.tpi.tip.backend.models.dtos.InvoiceByMonthDTO;
 import com.unq.edu.tpi.tip.backend.models.dtos.InvoiceDTO;
 import com.unq.edu.tpi.tip.backend.models.dtos.OrderDTO;
 import com.unq.edu.tpi.tip.backend.repositories.InvoiceRepository;
-import com.unq.edu.tpi.tip.backend.repositories.OrderTableRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.TemporalAdjusters;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -67,7 +63,8 @@ public class InvoiceService {
 
     }
 
-    public List<InvoiceByMonthDTO> getInvoicesByMonth() {
+    public List<InvoiceByMonthDTO> getInvoicesByMonth() throws ParseException
+    {
         List<InvoiceByMonthDTO> monthlyInvoices = new ArrayList<>();
         List<InvoiceByMonthDTO> tempInvoices = null;
         List<Invoice> invoices = invoiceRepository.findAll();
@@ -94,6 +91,25 @@ public class InvoiceService {
             }
         }
 
-        return monthlyInvoices;
+
+        return orderByMonth(monthlyInvoices);
     }
+
+    private List<InvoiceByMonthDTO> orderByMonth(List<InvoiceByMonthDTO> monthlyInvoices) throws ParseException
+    {
+        InvoiceByMonthDTO[] invoiceByMonthDTOS = new InvoiceByMonthDTO[monthlyInvoices.size()];
+        for (InvoiceByMonthDTO invoiceByMonthDTO : monthlyInvoices){
+            invoiceByMonthDTOS[getMonth(invoiceByMonthDTO.getMonth())-1] = invoiceByMonthDTO;
+        }
+        return Arrays.asList(invoiceByMonthDTOS);
+    }
+
+    private static Integer getMonth(String month) throws ParseException
+    {
+        SimpleDateFormat originalFormat = new SimpleDateFormat("MMMM");
+        SimpleDateFormat toMyFormat = new SimpleDateFormat("MM");
+        String formatted = toMyFormat.format(originalFormat.parse(month));
+        return Integer.parseInt(formatted);
+    }
+
 }
