@@ -55,7 +55,7 @@ public class OrderService
 		if (!customerOrder.hasOrderedItems()){
 			throw new OrderEmptyException();
 		}
-		customerOrder = this.orderRepository.save(customerOrder);
+		customerOrder = this.orderRepository.saveAndFlush(customerOrder);
 
 		for(Item item : customerOrder.getOrderedItems()){
 			item.setCustomerOrder(customerOrder);

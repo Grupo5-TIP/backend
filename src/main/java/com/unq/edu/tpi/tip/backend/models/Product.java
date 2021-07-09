@@ -24,6 +24,7 @@ public class Product implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Getter
+	@Setter
 	private Long id;
 
 	@Getter

@@ -9,13 +9,17 @@ public class InvoiceByMonthDTO {
     private String month;
     @Getter
     @Setter
+    private Integer monthNumber;
+    @Getter
+    @Setter
     private Integer year;
     @Getter
     @Setter
     private Double totalAmmount;
 
-    public InvoiceByMonthDTO(Integer year, String month) {
+    public InvoiceByMonthDTO(Integer year, String month, Integer monthNumber) {
         this.month = month;
+        this.monthNumber = monthNumber;
         this.year = year;
         this.totalAmmount = 0.0;
     }

@@ -138,18 +138,17 @@ public class InitInServiceDatabase {
         ProductMapper mapper = new ProductMapper();
 
         List<Product> menu = new ArrayList<>();
-        for (int i = 0; i < 5; i++) {
-            menu.addAll(mapper.mapToPojos(productService.getAll().get("Platos")));
-            menu.addAll(mapper.mapToPojos(productService.getAll().get("Bebidas")));
-            menu.addAll(mapper.mapToPojos(productService.getAll().get("Entradas")));
-            menu.addAll(mapper.mapToPojos(productService.getAll().get("Postres")));
-        }
+
+        menu.addAll(mapper.mapToPojos(productService.getAll().get("Platos")));
+        menu.addAll(mapper.mapToPojos(productService.getAll().get("Bebidas")));
+        menu.addAll(mapper.mapToPojos(productService.getAll().get("Entradas")));
+        menu.addAll(mapper.mapToPojos(productService.getAll().get("Postres")));
+
 
         List[] listOfItemsList = new ArrayList[menu.size()];
         for (int i = 0; i < menu.size(); i++) {
             listOfItemsList[i] = new ArrayList<Item>();
             listOfItemsList[i].add(new Item((int) (Math.random()*10)+20, menu.get(i)));
-
             orderService.createOrder(new OrderDTO(1L, listOfItemsList[i]));
             invoiceService.createInvoice(
                     1L,

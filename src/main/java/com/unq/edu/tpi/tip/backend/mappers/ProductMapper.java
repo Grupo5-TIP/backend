@@ -34,10 +34,12 @@ public class ProductMapper
 
 	public Product mapToPojo(ProductDTO productDTO){
 		Product product = new Product();
+		product.setId(productDTO.getId());
 		product.setName(productDTO.getName());
 		product.setDescription(productDTO.getDescription());
 		product.setCategory(productDTO.getCategory());
 		product.setPrice(productDTO.getPrice());
+		product.setImage(productDTO.getImage());
 
 		return product;
 	}

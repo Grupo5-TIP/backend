@@ -16,6 +16,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -84,7 +85,8 @@ public class InvoiceService {
             } else {
                 InvoiceByMonthDTO tempMonthDTO = new InvoiceByMonthDTO(
                         invoice.getDate().getYear(),
-                        invoice.getDate().getMonth().name());
+                        invoice.getDate().getMonth().name(),
+                        invoice.getDate().getMonthValue());
                 tempMonthDTO.setTotalAmmount(invoice.getAmmount());
 
                 monthlyInvoices.add(tempMonthDTO);
@@ -97,19 +99,12 @@ public class InvoiceService {
 
     private List<InvoiceByMonthDTO> orderByMonth(List<InvoiceByMonthDTO> monthlyInvoices) throws ParseException
     {
-        InvoiceByMonthDTO[] invoiceByMonthDTOS = new InvoiceByMonthDTO[monthlyInvoices.size()];
+        InvoiceByMonthDTO[] invoiceByMonthDTOS = new InvoiceByMonthDTO[12];
         for (InvoiceByMonthDTO invoiceByMonthDTO : monthlyInvoices){
-            invoiceByMonthDTOS[getMonth(invoiceByMonthDTO.getMonth())-1] = invoiceByMonthDTO;
+            invoiceByMonthDTOS[invoiceByMonthDTO.getMonthNumber()-1] = invoiceByMonthDTO;
         }
-        return Arrays.asList(invoiceByMonthDTOS);
+        return Arrays.asList(invoiceByMonthDTOS)
+                .stream().filter((e)->e != null)
+                .collect(Collectors.toList());
     }
-
-    private static Integer getMonth(String month) throws ParseException
-    {
-        SimpleDateFormat originalFormat = new SimpleDateFormat("MMMM");
-        SimpleDateFormat toMyFormat = new SimpleDateFormat("MM");
-        String formatted = toMyFormat.format(originalFormat.parse(month));
-        return Integer.parseInt(formatted);
-    }
-
 }
