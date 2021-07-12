@@ -25,7 +25,7 @@ public class Item implements Serializable
     private Integer amount;
 
     @Getter
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne(cascade = {CascadeType.MERGE})
     @JoinColumn(name = "product_id")
     @Fetch(FetchMode.JOIN)
     private Product product;

@@ -32,7 +32,7 @@ public class CustomerOrder implements Serializable
 	@Getter
 	private Boolean isChecked;
 
-	@OneToMany(cascade = {CascadeType.MERGE}, mappedBy = "customerOrder")
+	@OneToMany(cascade = {CascadeType.ALL}, mappedBy = "customerOrder")
 	@Getter
 	@Setter
 	List<Item> orderedItems;
