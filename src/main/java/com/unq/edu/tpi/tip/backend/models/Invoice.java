@@ -1,14 +1,13 @@
 package com.unq.edu.tpi.tip.backend.models;
 
-import com.mercadopago.MercadoPago;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.junit.Test;
 
 import javax.persistence.*;
 import java.io.IOException;
 import java.io.InputStream;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Properties;
 
@@ -32,6 +31,14 @@ public class Invoice {
     @Getter
     @Setter
     private String paymentType;
+
+    @Getter
+    @Setter
+    private LocalDateTime date;
+
+    @Getter
+    @Setter
+    private Double Ammount;
 
     @OneToMany
     @Getter

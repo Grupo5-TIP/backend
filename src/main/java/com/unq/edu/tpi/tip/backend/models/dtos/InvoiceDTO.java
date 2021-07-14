@@ -12,4 +12,8 @@ public class InvoiceDTO {
     private Long prefix;
     private Long number;
     private String paymentType;
+
+    public InvoiceDTO(String paymentType){
+        this.paymentType = paymentType;
+    }
 }

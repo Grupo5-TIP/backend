@@ -1,35 +1,49 @@
 
 package com.unq.edu.tpi.tip.backend.config;
 
+import com.unq.edu.tpi.tip.backend.exceptions.InvoiceDoesNotHaveOrdersException;
+import com.unq.edu.tpi.tip.backend.exceptions.OrderEmptyException;
 import com.unq.edu.tpi.tip.backend.exceptions.StateNotFoundException;
+import com.unq.edu.tpi.tip.backend.exceptions.TableDoesNotExistException;
+import com.unq.edu.tpi.tip.backend.mappers.ProductMapper;
 import com.unq.edu.tpi.tip.backend.models.*;
+import com.unq.edu.tpi.tip.backend.models.dtos.InvoiceDTO;
+import com.unq.edu.tpi.tip.backend.models.dtos.OrderDTO;
 import com.unq.edu.tpi.tip.backend.repositories.UserRepository;
-import com.unq.edu.tpi.tip.backend.services.OrderTableService;
-import com.unq.edu.tpi.tip.backend.services.ProductService;
-import com.unq.edu.tpi.tip.backend.services.StateService;
+import com.unq.edu.tpi.tip.backend.services.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class InitInServiceDatabase {
     @Value("${spring.datasource.driverClassName:NONE}")
     private String className;
-
     private final OrderTableService orderTableService;
-
     private final ProductService productService;
-
     private final StateService stateService;
-
+    private final OrderService orderService;
+    private final InvoiceService invoiceService;
     private final UserRepository userRepository;
 
-    public InitInServiceDatabase(OrderTableService orderTableService,ProductService productService, StateService stateService, UserRepository userRepository){
+    public InitInServiceDatabase(
+            OrderTableService orderTableService,
+            ProductService productService,
+            StateService stateService,
+            UserRepository userRepository,
+            OrderService orderService,
+            InvoiceService invoiceService){
+
         this.orderTableService = orderTableService;
         this.productService = productService;
         this.stateService = stateService;
         this.userRepository = userRepository;
+        this.orderService = orderService;
+        this.invoiceService = invoiceService;
     }
 
     @PostConstruct
@@ -39,6 +53,7 @@ public class InitInServiceDatabase {
             fireInitialDataStates();
             fireInitialDataOrderTable();
             fireInitialDataUsers();
+            fireInitialHistoricInvoicesData();
         }
     }
 
@@ -97,7 +112,7 @@ public class InitInServiceDatabase {
     }
 
     private void fireInitialDataOrderTable() throws StateNotFoundException {
-        OrderTable orderTable1 = new OrderTable(stateService.findById(1L), 1, 10, 4);
+        OrderTable orderTable1 = new OrderTable(stateService.findById(2L), 1, 10, 4);
         orderTable1.setId(1L);
         orderTableService.save(orderTable1);
         OrderTable orderTable2 = new OrderTable(stateService.findById(2L), 450, 10, 2);
@@ -106,14 +121,44 @@ public class InitInServiceDatabase {
         OrderTable orderTable3 = new OrderTable(stateService.findById(2L), 900, 100, 2);
         orderTable1.setId(3L);
         orderTableService.save(orderTable3);
-        OrderTable orderTable4 = new OrderTable(stateService.findById(1L), 0, 330, 6);
+        OrderTable orderTable4 = new OrderTable(stateService.findById(2L), 0, 330, 6);
         orderTable1.setId(4L);
         orderTableService.save(orderTable4);
-        OrderTable orderTable5 = new OrderTable(stateService.findById(1L), 450, 330, 4);
+        OrderTable orderTable5 = new OrderTable(stateService.findById(2L), 450, 330, 4);
         orderTable1.setId(5L);
         orderTableService.save(orderTable5);
-        OrderTable orderTable6 = new OrderTable(stateService.findById(3L), 800, 330, 4);
+        OrderTable orderTable6 = new OrderTable(stateService.findById(2L), 800, 330, 4);
         orderTable1.setId(6L);
         orderTableService.save(orderTable6);
+    }
+
+    private void fireInitialHistoricInvoicesData() throws TableDoesNotExistException, InvoiceDoesNotHaveOrdersException, OrderEmptyException {
+        InvoiceDTO invoiceEF = new InvoiceDTO("EF");
+
+        ProductMapper mapper = new ProductMapper();
+
+        List<Product> menu = new ArrayList<>();
+
+        menu.addAll(mapper.mapToPojos(productService.getAll().get("Platos")));
+        menu.addAll(mapper.mapToPojos(productService.getAll().get("Bebidas")));
+        menu.addAll(mapper.mapToPojos(productService.getAll().get("Entradas")));
+        menu.addAll(mapper.mapToPojos(productService.getAll().get("Postres")));
+
+
+        List[] listOfItemsList = new ArrayList[menu.size()];
+        for (int i = 0; i < menu.size(); i++) {
+            listOfItemsList[i] = new ArrayList<Item>();
+            listOfItemsList[i].add(new Item((int) (Math.random()*10)+20, menu.get(i)));
+            orderService.createOrder(new OrderDTO(1L, listOfItemsList[i]));
+            invoiceService.createInvoice(
+                    1L,
+                    invoiceEF,
+                    LocalDateTime.of(
+                            2021,
+                            (int) (Math.random()*6)+1,
+                            1,
+                            12,
+                            0));
+        }
     }
 }

@@ -15,6 +15,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.MockitoJUnitRunner;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -48,7 +49,7 @@ public class InvoiceServiceTest
 		when(orderMapper.mapDTOSIntoEntities(anyList())).thenReturn(new ArrayList<>());
 		InvoiceDTO invoiceDTO = mock(InvoiceDTO.class);
 
-		invoiceService.createInvoice(anyLong(), invoiceDTO );
+		invoiceService.createInvoice(anyLong(), invoiceDTO, LocalDateTime.of(2021,1,2,12,0));
 
 		verify( orderService, times(1)).checkBill(anyLong());
 		verify( invoiceRepository, times(1)).save(any(Invoice.class));
@@ -62,6 +63,6 @@ public class InvoiceServiceTest
 
 		InvoiceDTO invoiceDTO = mock(InvoiceDTO.class);
 
-		invoiceService.createInvoice(anyLong(),invoiceDTO );
+		invoiceService.createInvoice(anyLong(),invoiceDTO, LocalDateTime.of(2021,1,2,12,0));
 	}
 }
